@@ -13,13 +13,9 @@ export const typeormModuleFactory = (
     password: config.get<string>('POSTGRES_PASSWORD'),
     database: config.get<string>('POSTGRES_DB'),
     schema: config.get<string>('POSTGRES_SCHEMA'),
-    synchronize: config.get<boolean>('POSTGRES_SYNC'),
-    entities: [process.cwd() + './../../**/*.entity{.ts,.js}'],
-    migrationsRun: true,
-    migrations: [process.cwd() + '/migrations/**/*{.ts,.js}'],
-    cli: {
-      migrationsDir: 'src/migrations',
-    },
+    synchronize: Boolean(config.get<boolean>('POSTGRES_SYNC')),
+    logging: Boolean(config.get<boolean>('POSTGRES_LOGGING')),
+    entities: [],
   } as TypeOrmModuleOptions;
 };
 
