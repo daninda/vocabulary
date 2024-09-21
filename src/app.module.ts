@@ -1,7 +1,14 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { PostgresTypeOrmModule } from './infrastructure/postgres-typeorm/postgres-typeorm.module';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+    }),
+    PostgresTypeOrmModule,
+  ],
   controllers: [],
   providers: [],
 })
