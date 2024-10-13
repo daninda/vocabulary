@@ -11,5 +11,17 @@ services:
       PGDATA: ${POSTGRES_PGDATA}
     volumes:
       - postgres_data:${POSTGRES_PGDATA}
+
+  translate:
+    image: libretranslate/libretranslate
+    container_name: translate
+    ports:
+      - '${TRANSLATE_PORT}:${LT_PORT}'
+    environment:
+      LT_PORT: ${LT_PORT}
+      LT_LOAD_ONLY: ${LT_LOAD_ONLY}
+      LT_DISABLE_WEB_UI: ${LT_DISABLE_WEB_UI}
+      LT_DISABLE_FILES_TRANSLATION: ${LT_DISABLE_FILES_TRANSLATION}
+
 volumes:
   postgres_data:
