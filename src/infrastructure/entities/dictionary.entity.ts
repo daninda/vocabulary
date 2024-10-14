@@ -1,23 +1,28 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
-import { DictionaryEntry } from './dictionary-entry.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'dictionary' })
-export class Dictionary {
-  @PrimaryColumn('uuid')
+export class DictionaryEntity {
+  @PrimaryColumn({ generated: 'uuid' })
   id: string;
 
   @Column()
   name: string;
 
-  @Column({ name: 'create_at' })
+  @CreateDateColumn({ name: 'create_at' })
   createAt: string;
 
-  @Column({ name: 'update_at' })
+  @UpdateDateColumn({ name: 'update_at' })
   updateAt: string;
 
-  @OneToMany(
-    () => DictionaryEntry,
-    (dictionaryEntry) => dictionaryEntry.dictionary,
-  )
-  dictionaryEntries: DictionaryEntry[];
+  // @OneToMany(
+  //   () => DictionaryEntry,
+  //   (dictionaryEntry) => dictionaryEntry.dictionary,
+  // )
+  // dictionaryEntries: DictionaryEntry[];
 }

@@ -1,8 +1,7 @@
-import { IDictionary } from '../entities/dictionary.interface';
+import { Dictionary } from '../entities/dictionary';
 
-export interface IDictionaryRepository {
-  save(dictionary: IDictionary): Promise<IDictionary>;
-  update(dictionary: IDictionary): Promise<IDictionary>;
-  findById(id: string): Promise<IDictionary | null>;
-  findAll(): Promise<IDictionary[]>;
+export abstract class IDictionaryRepository {
+  abstract save(dictionary: Dictionary): Promise<Dictionary>;
+  abstract findById(id: string): Promise<Dictionary | null>;
+  abstract findAll(): Promise<Dictionary[]>;
 }

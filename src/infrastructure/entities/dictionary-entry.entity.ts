@@ -1,5 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
-import { Dictionary } from './dictionary.entity';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'dictionary_entry' })
 export class DictionaryEntry {
@@ -18,6 +17,6 @@ export class DictionaryEntry {
   @Column({ name: 'update_at' })
   updateAt: string;
 
-  @ManyToOne(() => Dictionary, (dictionary) => dictionary.dictionaryEntries)
-  dictionary: Dictionary;
+  // @ManyToOne(() => Dictionary, (dictionary) => dictionary.dictionaryEntries)
+  // dictionary: Dictionary;
 }

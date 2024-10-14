@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { IDictionaryRepository } from '../../repositories/dictionary.repository.interface';
-import { IDictionary } from '../../entities/dictionary.interface';
+import { Dictionary } from 'src/domain/entities/dictionary';
+import { IDictionaryRepository } from 'src/domain/repositories/dictionary.repository.interface';
 
 @Injectable()
 export class CreateDictionaryUseCase {
   constructor(private readonly dictionaryRepository: IDictionaryRepository) {}
 
-  async execute(dictionary: IDictionary): Promise<IDictionary> {
+  async execute(dictionary: Dictionary): Promise<Dictionary> {
     return this.dictionaryRepository.save(dictionary);
   }
 }
