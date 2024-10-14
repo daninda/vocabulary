@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:13
-    container_name: postgres_db
+    container_name: postgres
     ports:
       - '${POSTGRES_PORT}:5432'
     environment:
@@ -16,12 +16,12 @@ services:
     image: libretranslate/libretranslate
     container_name: translate
     ports:
-      - '${TRANSLATE_PORT}:${LT_PORT}'
+      - '${TRANSLATE_PORT}:${TRANSLATE_PORT}'
     environment:
-      LT_PORT: ${LT_PORT}
-      LT_LOAD_ONLY: ${LT_LOAD_ONLY}
-      LT_DISABLE_WEB_UI: ${LT_DISABLE_WEB_UI}
-      LT_DISABLE_FILES_TRANSLATION: ${LT_DISABLE_FILES_TRANSLATION}
+      LT_PORT: ${TRANSLATE_PORT}
+      LT_LOAD_ONLY: ${TRANSLATE_LOAD_ONLY}
+      LT_DISABLE_WEB_UI: ${TRANSLATE_DISABLE_WEB_UI}
+      LT_DISABLE_FILES_TRANSLATION: ${TRANSLATE_DISABLE_FILES_TRANSLATION}
 
 volumes:
   postgres_data:
