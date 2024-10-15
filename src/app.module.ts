@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { PostgresTypeOrmModule } from './infrastructure/postgres-typeorm/postgres-typeorm.module';
-import { DictionaryModule } from './infrastructure/modules/dictionary.module';
+import { PostgresTypeOrmModule } from './common/postgres-typeorm/postgres-typeorm.module';
+import { DictionaryModule } from './dictionary/infrastructure/dictionary.module';
 
 @Module({
   imports: [

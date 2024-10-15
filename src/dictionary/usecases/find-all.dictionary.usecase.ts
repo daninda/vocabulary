@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Dictionary } from 'src/domain/entities/dictionary';
-import { IDictionaryRepository } from 'src/domain/repositories/dictionary.repository.interface';
+import { Dictionary } from 'src/dictionary/entities/dictionary';
+import { IDictionaryRepository } from 'src/common/interfaces/repositories/dictionary.repository.interface';
 
 @Injectable()
 export class FindAllDictionaryUseCase {

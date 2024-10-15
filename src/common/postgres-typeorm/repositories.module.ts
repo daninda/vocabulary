@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DictionaryEntity } from '../entities/dictionary.entity';
+import { DictionaryEntity } from '../../dictionary/infrastructure/dictionary.entity';
 import { PostgresTypeOrmModule } from './postgres-typeorm.module';
-import { DictionaryRepository } from './dictionary.repository';
+import { DictionaryRepository } from '../../dictionary/infrastructure/dictionary.repository';
 
 @Module({
   imports: [
@@ -12,4 +12,4 @@ import { DictionaryRepository } from './dictionary.repository';
   providers: [DictionaryRepository],
   exports: [DictionaryRepository],
 })
-export class RepositorysModule {}
+export class RepositoriesModule {}

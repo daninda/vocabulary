@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Dictionary } from 'src/domain/entities/dictionary';
-import { IDictionaryRepository } from 'src/domain/repositories/dictionary.repository.interface';
-import { DictionaryEntity } from '../entities/dictionary.entity';
+import { Dictionary } from 'src/dictionary/entities/dictionary';
+import { IDictionaryRepository } from 'src/common/interfaces/repositories/dictionary.repository.interface';
+import { DictionaryEntity } from './dictionary.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -40,11 +40,12 @@ export class DictionaryRepository implements IDictionaryRepository {
   }
 
   private toDictionary(dictionaryEntity: DictionaryEntity): Dictionary {
-    const dictionary: Dictionary = new Dictionary();
-    dictionary.id = dictionaryEntity.id;
-    dictionary.name = dictionaryEntity.name;
-    dictionary.createAt = dictionaryEntity.createAt;
-    dictionary.updateAt = dictionaryEntity.updateAt;
+    const dictionary: Dictionary = new Dictionary(
+      dictionaryEntity.id,
+      dictionaryEntity.name,
+      dictionaryEntity.createAt,
+      dictionaryEntity.updateAt,
+    );
 
     return dictionary;
   }
