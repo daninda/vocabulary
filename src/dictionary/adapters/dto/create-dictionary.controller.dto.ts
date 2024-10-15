@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreateDictionaryControllerOutput {
   id: string;
@@ -8,6 +8,8 @@ export class CreateDictionaryControllerOutput {
 }
 
 export class CreateDictionaryControllerInput {
+  @IsString()
   @IsNotEmpty()
+  @MaxLength(255)
   name: string;
 }
