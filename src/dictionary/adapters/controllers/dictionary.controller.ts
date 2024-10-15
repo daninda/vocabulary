@@ -19,6 +19,6 @@ export class DictionaryController {
     const dictionary = await this.createDictionaryUseCase.execute(
       DictionaryMapper.fromControllerToUseCase(dto),
     );
-    return DictionaryMapper.fromUseCaseToController(dictionary);
+    return DictionaryMapper.fromEntityToController(dictionary);
   }
 }

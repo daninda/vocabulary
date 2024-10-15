@@ -8,8 +8,8 @@ export class CreateDictionaryControllerOutput {
 }
 
 export class CreateDictionaryControllerInput {
-  @IsString()
-  @IsNotEmpty()
   @MaxLength(255)
+  @IsNotEmpty()
+  @IsString()
   name: string;
 }

@@ -2,10 +2,8 @@ import {
   CreateDictionaryControllerInput,
   CreateDictionaryControllerOutput,
 } from '../adapters/dto/create-dictionary.controller.dto';
-import {
-  CreateDictionaryUsecaseInput,
-  CreateDictionaryUseCaseOutput,
-} from '../usecases/dto/create-dictionary.usecase.dto';
+import { Dictionary } from '../entities/dictionary';
+import { CreateDictionaryUsecaseInput } from '../usecases/dto/create-dictionary.usecase.dto';
 
 export class DictionaryMapper {
   static fromControllerToUseCase(
@@ -16,8 +14,8 @@ export class DictionaryMapper {
     };
   }
 
-  static fromUseCaseToController(
-    dictionary: CreateDictionaryUseCaseOutput,
+  static fromEntityToController(
+    dictionary: Dictionary,
   ): CreateDictionaryControllerOutput {
     return {
       id: dictionary.id,
