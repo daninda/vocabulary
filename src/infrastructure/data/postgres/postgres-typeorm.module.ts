@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { DictionaryEntity } from '../../dictionary/infrastructure/dictionary.entity';
+import { DictionaryEntity } from './entities/dictionary.entity';
 
 export const typeormModuleFactory = (
   config: ConfigService,
