@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { IDictionaryRepository } from 'src/application/repositories/dictionary-repository.interface';
 import { Dictionary } from 'src/domain/entities/dictionary';
-import { IDictionaryRepository } from 'src/domain/repositories/dictionary.repository.interface';
 import { FindByIdDictionaryInput } from 'src/shared/dtos/dictionary/find-by-id-dictionary.dto';
 
 @Injectable()

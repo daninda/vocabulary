@@ -1,4 +1,4 @@
-import { Dictionary } from '../entities/dictionary';
+import { Dictionary } from 'src/domain/entities/dictionary';
 
 export abstract class IDictionaryRepository {
   abstract save(dictionary: Dictionary): Promise<Dictionary>;

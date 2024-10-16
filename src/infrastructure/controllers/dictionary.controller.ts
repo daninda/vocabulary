@@ -14,9 +14,9 @@ import {
 } from 'src/shared/dtos/dictionary/create-dictionary.dto';
 import { FindAllDictionaryOutput } from 'src/shared/dtos/dictionary/find-all-dictionary.dto';
 import { FindByIdDictionaryInput } from 'src/shared/dtos/dictionary/find-by-id-dictionary.dto';
-import { CreateDictionaryUseCase } from 'src/usecases/dictionary/create.dictionary.usecase';
-import { FindAllDictionaryUseCase } from 'src/usecases/dictionary/find-all.dictionary.usecase';
-import { FindByIdDictionaryUseCase } from 'src/usecases/dictionary/find-by-id.dictionary.usecase';
+import { CreateDictionaryUseCase } from 'src/application/usecases/dictionary/create.dictionary.usecase';
+import { FindAllDictionaryUseCase } from 'src/application/usecases/dictionary/find-all.dictionary.usecase';
+import { FindByIdDictionaryUseCase } from 'src/application/usecases/dictionary/find-by-id.dictionary.usecase';
 
 @Controller('dictionary')
 export class DictionaryController {

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Dictionary } from 'src/domain/entities/dictionary';
-import { IDictionaryRepository } from 'src/domain/repositories/dictionary.repository.interface';
-import { DictionaryEntity } from '../data/postgres/entities/dictionary.entity';
+import { DictionaryEntity } from '../entities/dictionary.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { IDictionaryRepository } from 'src/application/repositories/dictionary-repository.interface';
 
 @Injectable()
 export class DictionaryRepository implements IDictionaryRepository {
