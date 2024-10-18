@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DictionaryEntity } from './entities/dictionary.entity';
+import { SessionEntity } from './entities/session.entity';
+import { UserEntity } from './entities/user.entity';
 
 export const typeormModuleFactory = (
   config: ConfigService,
@@ -16,7 +18,7 @@ export const typeormModuleFactory = (
     schema: config.get<string>('POSTGRES_SCHEMA'),
     synchronize: Boolean(config.get<boolean>('POSTGRES_SYNC')),
     logging: Boolean(config.get<boolean>('POSTGRES_LOGGING')),
-    entities: [DictionaryEntity /*, DictionaryEntry */],
+    entities: [DictionaryEntity, UserEntity, SessionEntity],
   } as TypeOrmModuleOptions;
 };
 

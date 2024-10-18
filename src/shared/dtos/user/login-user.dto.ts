@@ -17,13 +17,6 @@ export class LoginUserInput {
 }
 
 export class LoginUserOutput {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    createAt: string;
-    updateAt: string;
-  };
   accessToken: string;
   refreshToken: string;
 }

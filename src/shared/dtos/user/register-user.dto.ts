@@ -22,13 +22,6 @@ export class RegisterUserInput {
 }
 
 export class RegisterUserOutput {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    createAt: string;
-    updateAt: string;
-  };
   accessToken: string;
   refreshToken: string;
 }

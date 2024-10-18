@@ -1,5 +1,6 @@
 import { ISessionRepository } from 'src/application/repositories/session-repository.interface';
 import { IJwtService } from 'src/application/services/jwt-service.interface';
+import { Result } from 'src/shared/utils/result';
 
 export class RefreshUseCase {
   constructor(
@@ -10,28 +11,28 @@ export class RefreshUseCase {
   async execute(
     refreshToken: string,
     fingerprint: string,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  ): Promise<Result<{ accessToken: string; refreshToken: string }>> {
     const payload = this.jwtService.verifyRefreshToken(refreshToken);
 
     if (payload.fingerprint !== fingerprint) {
-      throw new Error('Invalid fingerprint');
+      return Result.failure('Invalid fingerprint');
     }
 
     const session = await this.sessionRepository.findByUserIdAndFingerprint(
-      payload.id,
+      payload.userId,
       payload.fingerprint,
     );
 
     if (!session) {
-      throw new Error('Session not found');
+      return Result.failure('Invalid session');
     }
 
     const newAccessToken = this.jwtService.signAccessToken({
-      id: session.userId,
+      userId: session.userId,
       fingerprint: session.fingerprint,
     });
     const newRefreshToken = this.jwtService.signRefreshToken({
-      id: session.userId,
+      userId: session.userId,
       fingerprint: session.fingerprint,
     });
 
@@ -39,6 +40,9 @@ export class RefreshUseCase {
 
     await this.sessionRepository.save(session);
 
-    return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+    return Result.success({
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    });
   }
 }

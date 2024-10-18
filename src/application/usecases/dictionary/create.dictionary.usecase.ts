@@ -3,13 +3,14 @@ import { IDictionaryRepository } from 'src/application/repositories/dictionary-r
 import { Dictionary } from 'src/domain/entities/dictionary';
 
 import { CreateDictionaryInput } from 'src/shared/dtos/dictionary/create-dictionary.dto';
+import { Result } from 'src/shared/utils/result';
 
 @Injectable()
 export class CreateDictionaryUseCase {
   constructor(private readonly dictionaryRepository: IDictionaryRepository) {}
 
-  async execute(dto: CreateDictionaryInput): Promise<Dictionary> {
+  async execute(dto: CreateDictionaryInput): Promise<Result<Dictionary>> {
     const dictionary = Dictionary.create(dto.name);
-    return this.dictionaryRepository.save(dictionary);
+    return Result.success(await this.dictionaryRepository.save(dictionary));
   }
 }
