@@ -7,9 +7,10 @@ import { DictionaryEntity } from '../data/postgres/entities/dictionary.entity';
 import { FindAllDictionaryUseCase } from 'src/application/usecases/dictionary/find-all.dictionary.usecase';
 import { FindByIdDictionaryUseCase } from 'src/application/usecases/dictionary/find-by-id.dictionary.usecase';
 import { IDictionaryRepository } from 'src/application/repositories/dictionary-repository.interface';
+import { AuthModule } from './auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DictionaryEntity])],
+  imports: [TypeOrmModule.forFeature([DictionaryEntity]), AuthModule],
   controllers: [DictionaryController],
   providers: [
     CreateDictionaryUseCase,

@@ -6,6 +6,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateDictionaryOutputMapper } from 'src/domain/mappers/dictionary/create-dictionary.mapper';
 import { FindAllDictionaryOutputMapper } from 'src/domain/mappers/dictionary/find-all-dictionary.mapper';
@@ -22,8 +23,11 @@ import { CreateDictionaryUseCase } from 'src/application/usecases/dictionary/cre
 import { FindAllDictionaryUseCase } from 'src/application/usecases/dictionary/find-all.dictionary.usecase';
 import { FindByIdDictionaryUseCase } from 'src/application/usecases/dictionary/find-by-id.dictionary.usecase';
 import { FindByIdDictionaryOutputMapper } from 'src/domain/mappers/dictionary/find-by-id-dictionary.mapper';
+import { AuthGuard } from '../guards/auth.guard';
+import { UserId } from '../decorators/user-id.decorator';
 
-@Controller('dictionary')
+@UseGuards(AuthGuard)
+@Controller('dictionaries')
 export class DictionaryController {
   constructor(
     private readonly createDictionaryUseCase: CreateDictionaryUseCase,
@@ -34,8 +38,9 @@ export class DictionaryController {
   @Post()
   async create(
     @Body() dto: CreateDictionaryInput,
+    @UserId() userId: string,
   ): Promise<CreateDictionaryOutput> {
-    const res = await this.createDictionaryUseCase.execute(dto);
+    const res = await this.createDictionaryUseCase.execute(dto.name, userId);
 
     if (!res.isSuccess) {
       throw new BadRequestException(res.error);
@@ -46,8 +51,8 @@ export class DictionaryController {
   }
 
   @Get()
-  async findAll(): Promise<FindAllDictionaryOutput[]> {
-    const res = await this.findAllDictionaryUseCase.execute();
+  async findAll(@UserId() userId: string): Promise<FindAllDictionaryOutput[]> {
+    const res = await this.findAllDictionaryUseCase.execute(userId);
 
     if (!res.isSuccess) {
       throw new BadRequestException(res.error);
@@ -60,8 +65,9 @@ export class DictionaryController {
   @Get(':id')
   async findById(
     @Param() dto: FindByIdDictionaryInput,
+    @UserId() userId: string,
   ): Promise<FindByIdDictionaryOutput> {
-    const res = await this.findByIdDictionaryUseCase.execute(dto);
+    const res = await this.findByIdDictionaryUseCase.execute(userId, dto.id);
 
     if (!res.isSuccess) {
       throw new NotFoundException("Dictionary doesn't exist");

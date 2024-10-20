@@ -7,7 +7,7 @@ import { User } from 'src/domain/entities/user';
 import {
   RegisterUserInput,
   RegisterUserOutput,
-} from 'src/shared/dtos/user/register-user.dto';
+} from 'src/shared/dtos/auth/register-user.dto';
 import { Result } from 'src/shared/utils/result';
 
 @Injectable()

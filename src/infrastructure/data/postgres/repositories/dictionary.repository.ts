@@ -14,18 +14,28 @@ export class DictionaryRepository implements IDictionaryRepository {
 
   async save(dictionary: Dictionary): Promise<Dictionary> {
     const dictionaryEntity = this.toDictionaryEntity(dictionary);
-    const res = await this.dictionaryRepository.save(dictionaryEntity);
 
-    return this.toDictionary(res);
+    const savedDictionaryEntity = await this.dictionaryRepository.save({
+      ...dictionaryEntity,
+      user: { id: dictionary.userId },
+    });
+
+    return this.toDictionary(savedDictionaryEntity);
   }
 
-  async findAll(): Promise<Dictionary[]> {
-    const res = await this.dictionaryRepository.find();
+  async findAll(userId: string): Promise<Dictionary[]> {
+    const res = await this.dictionaryRepository.find({
+      relations: ['user'],
+      where: { user: { id: userId } },
+    });
     return res.map((dictionary) => this.toDictionary(dictionary));
   }
 
-  async findById(id: string): Promise<Dictionary | null> {
-    const res = await this.dictionaryRepository.findOneBy({ id });
+  async findById(userId: string, id: string): Promise<Dictionary | null> {
+    const res = await this.dictionaryRepository.findOne({
+      relations: ['user'],
+      where: { id, user: { id: userId } },
+    });
     return res ? this.toDictionary(res) : null;
   }
 
@@ -42,6 +52,7 @@ export class DictionaryRepository implements IDictionaryRepository {
   private toDictionary(dictionaryEntity: DictionaryEntity): Dictionary {
     const dictionary: Dictionary = new Dictionary(
       dictionaryEntity.id,
+      dictionaryEntity.user.id,
       dictionaryEntity.name,
       dictionaryEntity.createAt,
       dictionaryEntity.updateAt,

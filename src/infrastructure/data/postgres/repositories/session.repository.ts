@@ -26,9 +26,9 @@ export class SessionRepository implements ISessionRepository {
     userId: string,
     fingerprint: string,
   ): Promise<Session | null> {
-    const sessionEntity = await this.sessionRepository.findOneBy({
-      user: { id: userId },
-      fingerprint,
+    const sessionEntity = await this.sessionRepository.findOne({
+      relations: ['user'],
+      where: { user: { id: userId }, fingerprint },
     });
     return sessionEntity ? this.toSession(sessionEntity) : null;
   }

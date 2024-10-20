@@ -11,8 +11,10 @@ import { RegisterUserUseCase } from 'src/application/usecases/auth/register-user
 import { LoginUserUseCase } from 'src/application/usecases/auth/login-user.usecase';
 import { RefreshUseCase } from 'src/application/usecases/auth/refresh.usecase';
 import { JwtService } from '../services/jwt.service';
-import { IJwtService } from 'src/application/services/jwt-service.interface';
 import { ConfigModule } from '@nestjs/config';
+import { AuthGuard } from '../guards/auth.guard';
+import { IJwtService } from 'src/application/services/jwt-service.interface';
+import { LogoutUserUseCase } from 'src/application/usecases/auth/logout-user.usecase';
 
 @Module({
   imports: [
@@ -21,12 +23,15 @@ import { ConfigModule } from '@nestjs/config';
   ],
   controllers: [AuthController],
   providers: [
-    RegisterUserUseCase,
-    LoginUserUseCase,
-    RefreshUseCase,
     { provide: IJwtService, useClass: JwtService },
     { provide: IUserRepository, useClass: UserRepository },
     { provide: ISessionRepository, useClass: SessionRepository },
+    AuthGuard,
+    RegisterUserUseCase,
+    LoginUserUseCase,
+    RefreshUseCase,
+    LogoutUserUseCase,
   ],
+  exports: [AuthGuard, IJwtService],
 })
 export class AuthModule {}

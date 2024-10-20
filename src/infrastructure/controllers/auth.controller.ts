@@ -9,11 +9,13 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { LoginUserUseCase } from 'src/application/usecases/auth/login-user.usecase';
+import { LogoutUserUseCase } from 'src/application/usecases/auth/logout-user.usecase';
 import { RefreshUseCase } from 'src/application/usecases/auth/refresh.usecase';
 import { RegisterUserUseCase } from 'src/application/usecases/auth/register-user.usecase';
-import { LoginUserInput } from 'src/shared/dtos/user/login-user.dto';
-import { RefreshInput } from 'src/shared/dtos/user/refresh.dto';
-import { RegisterUserInput } from 'src/shared/dtos/user/register-user.dto';
+import { LoginUserInput } from 'src/shared/dtos/auth/login-user.dto';
+import { LogoutInput } from 'src/shared/dtos/auth/logout.dto';
+import { RefreshInput } from 'src/shared/dtos/auth/refresh.dto';
+import { RegisterUserInput } from 'src/shared/dtos/auth/register-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -21,6 +23,7 @@ export class AuthController {
     private readonly registerUserUseCase: RegisterUserUseCase,
     private readonly loginUserUseCase: LoginUserUseCase,
     private readonly refreshUseCase: RefreshUseCase,
+    private readonly logoutUseCase: LogoutUserUseCase,
   ) {}
 
   @Post('register')
@@ -89,5 +92,26 @@ export class AuthController {
     });
 
     return { accessToken: tokens.accessToken };
+  }
+
+  @Post('logout')
+  async logout(
+    @Req() req: Request,
+    @Body() dto: LogoutInput,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<null> {
+    const refreshToken = req.cookies['refreshToken'];
+    if (!refreshToken) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+    const result = await this.logoutUseCase.execute(
+      refreshToken,
+      dto.fingerprint,
+    );
+    if (!result.isSuccess) {
+      throw new BadRequestException(result.error);
+    }
+    res.clearCookie('refreshToken');
+    return null;
   }
 }

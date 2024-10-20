@@ -6,7 +6,7 @@ import { Session } from 'src/domain/entities/session';
 import {
   LoginUserInput,
   LoginUserOutput,
-} from 'src/shared/dtos/user/login-user.dto';
+} from 'src/shared/dtos/auth/login-user.dto';
 import { Result } from 'src/shared/utils/result';
 
 @Injectable()

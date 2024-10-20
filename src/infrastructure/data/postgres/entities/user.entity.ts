@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { SessionEntity } from './session.entity';
+import { DictionaryEntity } from './dictionary.entity';
 
 @Entity({ name: 'user' })
 export class UserEntity {
@@ -19,6 +20,11 @@ export class UserEntity {
     onDelete: 'CASCADE',
   })
   sessions: SessionEntity[];
+
+  @OneToMany(() => DictionaryEntity, (dictionary) => dictionary.user, {
+    onDelete: 'CASCADE',
+  })
+  dictionaries: DictionaryEntity[];
 
   @Column({ name: 'create_at' })
   createAt: string;

@@ -7,7 +7,7 @@ import { Result } from 'src/shared/utils/result';
 export class FindAllDictionaryUseCase {
   constructor(private readonly dictionaryRepository: IDictionaryRepository) {}
 
-  async execute(): Promise<Result<Dictionary[]>> {
-    return Result.success(await this.dictionaryRepository.findAll());
+  async execute(userId: string): Promise<Result<Dictionary[]>> {
+    return Result.success(await this.dictionaryRepository.findAll(userId));
   }
 }
