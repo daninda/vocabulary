@@ -26,7 +26,7 @@ export class AuthController {
   @Post('register')
   async register(
     @Body() dto: RegisterUserInput,
-    @Res() res: Response,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<{ accessToken: string }> {
     const result = await this.registerUserUseCase.execute(dto);
 
@@ -46,7 +46,7 @@ export class AuthController {
   @Post('login')
   async login(
     @Body() dto: LoginUserInput,
-    @Res() res: Response,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<{ accessToken: string }> {
     const result = await this.loginUserUseCase.execute(dto);
 
@@ -66,7 +66,7 @@ export class AuthController {
   async refresh(
     @Body() dto: RefreshInput,
     @Req() req: Request,
-    @Res() res: Response,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<{ accessToken: string }> {
     const refreshToken = req.cookies['refreshToken'];
     if (!refreshToken) {
