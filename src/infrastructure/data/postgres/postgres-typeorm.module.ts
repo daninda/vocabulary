@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { DictionaryEntity } from './entities/dictionary.entity';
-import { SessionEntity } from './entities/session.entity';
-import { UserEntity } from './entities/user.entity';
+
+import { DictionaryEntity } from './entities/dictionary';
+import { SessionEntity } from './entities/session';
+import { UserEntity } from './entities/user';
 
 export const typeormModuleFactory = (
   config: ConfigService,

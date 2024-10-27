@@ -1,20 +1,21 @@
+import { AuthModule } from '@infrastructure/modules/auth';
+import { DictionaryModule } from '@infrastructure/modules/dictionary';
+import { TranslateModule } from '@infrastructure/modules/translate';
+import { UserModule } from '@infrastructure/modules/user';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
-import { DictionaryModule } from './infrastructure/modules/dictionary.module';
-import { PostgresTypeOrmModule } from './infrastructure/data/postgres/postgres-typeorm.module';
-import { AuthModule } from './infrastructure/modules/auth.module';
-import { UserModule } from './infrastructure/modules/user.module';
+import { RepositoriesModule } from '@postgres/repositories.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
     }),
-    PostgresTypeOrmModule,
+    RepositoriesModule,
     AuthModule,
     DictionaryModule,
     UserModule,
+    TranslateModule,
   ],
   controllers: [],
   providers: [],

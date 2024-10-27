@@ -1,4 +1,17 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@domain/*": ["src/domain/*"],
+      "@usecases/*": ["src/application/usecases/*"],
+      "@application/*": ["src/application/*"],
+      "@postgres/*": ["src/infrastructure/data/postgres/*"],
+      "@infrastructure/*": ["src/infrastructure/*"],
+      "@dtos/*": ["src/shared/dtos/*"],
+      "@mappers/*": ["src/shared/mappers/*"],
+      "@shared/*": ["src/shared/*"]
+    }
+  }
 }

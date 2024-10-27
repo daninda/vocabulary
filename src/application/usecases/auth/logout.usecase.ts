@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Result } from '@shared/utils/result';
 
 @Injectable()
-export class RefreshUseCase {
+export class LogoutUserUseCase {
   constructor(
     private readonly jwtService: IJwtService,
     private readonly sessionRepository: ISessionRepository,
@@ -13,7 +13,7 @@ export class RefreshUseCase {
   async execute(
     refreshToken: string,
     fingerprint: string,
-  ): Promise<Result<{ accessToken: string; refreshToken: string }>> {
+  ): Promise<Result<null>> {
     const payload = this.jwtService.verifyRefreshToken(refreshToken);
 
     if (payload.fingerprint !== fingerprint) {
@@ -29,22 +29,10 @@ export class RefreshUseCase {
       return Result.failure('Invalid session');
     }
 
-    const newAccessToken = this.jwtService.signAccessToken({
-      userId: session.userId,
-      fingerprint: session.fingerprint,
-    });
-    const newRefreshToken = this.jwtService.signRefreshToken({
-      userId: session.userId,
-      fingerprint: session.fingerprint,
-    });
-
-    session.refreshToken = newRefreshToken;
-
-    await this.sessionRepository.save(session);
-
-    return Result.success({
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
-    });
+    await this.sessionRepository.deleteByUserIdAndFingerprint(
+      payload.userId,
+      payload.fingerprint,
+    );
+    return Result.success(null);
   }
 }

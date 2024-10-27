@@ -16,6 +16,16 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@domain/*": ["src/domain/*"],
+      "@usecases/*": ["src/application/usecases/*"],
+      "@application/*": ["src/application/*"],
+      "@postgres/*": ["src/infrastructure/data/postgres/*"],
+      "@infrastructure/*": ["src/infrastructure/*"],
+      "@dtos/*": ["src/shared/dtos/*"],
+      "@mappers/*": ["src/shared/mappers/*"],
+      "@shared/*": ["src/shared/*"]
+    }
   }
 }
