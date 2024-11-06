@@ -7,7 +7,10 @@ import {
   CreateDictionaryEntryOutput,
 } from '@dtos/dictionary-entry/create.dto';
 import { DeleteDictionaryEntryInput } from '@dtos/dictionary-entry/delete.dto';
-import { FindAllDictionaryEntryOutput } from '@dtos/dictionary-entry/find-all.dto';
+import {
+  FindAllDictionaryEntryInput,
+  FindAllDictionaryEntryOutput,
+} from '@dtos/dictionary-entry/find-all.dto';
 import {
   FindByIdDictionaryEntryInput,
   FindByIdDictionaryEntryOutput,
@@ -16,7 +19,6 @@ import {
   RatingDictionaryEntryInput,
   RatingDictionaryEntryOutput,
 } from '@dtos/dictionary-entry/rating.dto';
-import { UserId } from '@infrastructure/decorators/user-id';
 import { AuthGuard } from '@infrastructure/guards/auth';
 import {
   BadRequestException,
@@ -27,6 +29,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ChangeDictionaryDictionaryEntryUseCase } from '@usecases/dictionary-entry/change-dictionary.usecase';
@@ -68,9 +71,11 @@ export class DictionaryEntryController {
 
   @Get()
   async findAllDictionaryEntry(
-    @UserId() userId: string,
+    @Query() dto: FindAllDictionaryEntryInput,
   ): Promise<FindAllDictionaryEntryOutput> {
-    const result = await this.findAllDictionaryEntryUseCase.execute(userId);
+    const result = await this.findAllDictionaryEntryUseCase.execute(
+      dto.dictionaryId,
+    );
 
     if (!result.isSuccess) {
       throw new BadRequestException(result.error);

@@ -9,9 +9,9 @@ export class FindAllDictionaryEntryUseCase {
     private readonly dictionaryEntryRepository: IDictionaryEntryRepository,
   ) {}
 
-  async execute(userId: string): Promise<Result<DictionaryEntry[]>> {
+  async execute(dictionaryId: string): Promise<Result<DictionaryEntry[]>> {
     const dictionaryEntries =
-      await this.dictionaryEntryRepository.findAll(userId);
+      await this.dictionaryEntryRepository.findAll(dictionaryId);
     return Result.success(dictionaryEntries);
   }
 }

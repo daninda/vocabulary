@@ -1,5 +1,5 @@
 export interface IYaDictionaryResponse {
-  definitions: Definition[];
+  def: Definition[];
 }
 
 interface Definition {

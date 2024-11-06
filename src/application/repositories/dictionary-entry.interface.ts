@@ -10,4 +10,8 @@ export abstract class IDictionaryEntryRepository {
     dictionaryId: string,
   ): Promise<DictionaryEntry>;
   abstract changeRating(id: string, rating: number): Promise<DictionaryEntry>;
+  abstract findForTestByDictionary(
+    dictionaryId: string,
+  ): Promise<DictionaryEntry | null>;
+  abstract findForTest(userId: string): Promise<DictionaryEntry | null>;
 }

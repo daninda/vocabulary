@@ -3,7 +3,8 @@ import { DictionaryEntry } from '@domain/dictionary-entry';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DictionaryEntryEntity } from '@postgres/entities/dictionary-entry';
-import { Repository } from 'typeorm';
+import { getPartOfSpeech } from '@shared/types/parts-of-speech';
+import { LessThan, Repository } from 'typeorm';
 
 @Injectable()
 export class DictionaryEntryRepository implements IDictionaryEntryRepository {
@@ -67,6 +68,54 @@ export class DictionaryEntryRepository implements IDictionaryEntryRepository {
     return res;
   }
 
+  async findForTestByDictionary(
+    dictionaryId: string,
+  ): Promise<DictionaryEntry | null> {
+    const date = new Date(new Date().getTime() - 1000 * 60 * 60 * 24);
+
+    const res = await this.dictionaryEntryRepository.findOne({
+      relations: ['dictionary'],
+      where: {
+        dictionary: { id: dictionaryId },
+        rating: LessThan(3),
+        updateAt: LessThan(date),
+      },
+      order: {
+        rating: 'ASC',
+      },
+    });
+
+    if (!res) {
+      return null;
+    }
+
+    return this.toDictionaryEntry(res);
+  }
+
+  async findForTest(userId: string): Promise<DictionaryEntry | null> {
+    const date = new Date(new Date().getTime() - 1000 * 60 * 60 * 24);
+
+    const res = await this.dictionaryEntryRepository.findOne({
+      relations: ['dictionary'],
+      where: {
+        rating: LessThan(3),
+        dictionary: {
+          user: { id: userId },
+        },
+        updateAt: LessThan(date),
+      },
+      order: {
+        rating: 'ASC',
+      },
+    });
+
+    if (!res) {
+      return null;
+    }
+
+    return this.toDictionaryEntry(res);
+  }
+
   private toDictionaryEntryEntity(
     dictionaryEntry: DictionaryEntry,
   ): DictionaryEntryEntity {
@@ -81,9 +130,9 @@ export class DictionaryEntryRepository implements IDictionaryEntryRepository {
       dictionaryEntry.translated.synonims.join(',');
     dictionaryEntryEntity.tr_means = dictionaryEntry.translated.means.join(',');
     dictionaryEntryEntity.tr_example =
-      dictionaryEntry.translated.example.text +
+      dictionaryEntry.translated.example?.text +
       '/' +
-      dictionaryEntry.translated.example.translated;
+      dictionaryEntry.translated.example?.translated;
     dictionaryEntryEntity.createAt = dictionaryEntry.createAt;
     dictionaryEntryEntity.updateAt = dictionaryEntry.updateAt;
     return dictionaryEntryEntity;
@@ -96,7 +145,7 @@ export class DictionaryEntryRepository implements IDictionaryEntryRepository {
       dictionaryEntryEntity.id,
       dictionaryEntryEntity.dictionary.id,
       dictionaryEntryEntity.word,
-      dictionaryEntryEntity.pos,
+      getPartOfSpeech(dictionaryEntryEntity.pos),
       {
         word: dictionaryEntryEntity.tr_word,
         pos: dictionaryEntryEntity.tr_pos,

@@ -6,8 +6,8 @@ export class Session {
     public userId: string,
     public fingerprint: string,
     public refreshToken: string,
-    public createAt: string,
-    public updateAt: string,
+    public createAt: Date,
+    public updateAt: Date,
   ) {}
 
   static create(
@@ -20,8 +20,8 @@ export class Session {
       userId,
       fingerprint,
       refreshToken,
-      new Date().toUTCString(),
-      new Date().toUTCString(),
+      new Date(),
+      new Date(),
     );
   }
 }

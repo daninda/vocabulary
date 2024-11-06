@@ -7,8 +7,8 @@ export class User {
     public name: string,
     public email: string,
     public passwordHash: string,
-    public createAt: string,
-    public updateAt: string,
+    public createAt: Date,
+    public updateAt: Date,
   ) {}
 
   checkPassword(password: string): boolean {
@@ -22,8 +22,8 @@ export class User {
       name,
       email,
       passwordHash,
-      new Date().toUTCString(),
-      new Date().toUTCString(),
+      new Date(),
+      new Date(),
     );
   }
 }

@@ -33,9 +33,9 @@ export class DictionaryEntity {
   )
   dictionaryEntities: DictionaryEntryEntity[];
 
-  @Column({ name: 'create_at' })
-  createAt: string;
+  @Column({ name: 'create_at', type: 'timestamp' })
+  createAt: Date;
 
-  @Column({ name: 'update_at' })
-  updateAt: string;
+  @Column({ name: 'update_at', type: 'timestamp' })
+  updateAt: Date;
 }

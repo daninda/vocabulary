@@ -14,13 +14,13 @@ export class YaDictionary {
 
   static fromResponse(response: IYaDictionaryResponse): YaDictionary {
     return new YaDictionary(
-      response.definitions[0].text,
-      response.definitions[0].pos,
-      response.definitions[0].tr[0].syn.map((s) => s.text),
-      response.definitions[0].tr[0].mean.map((m) => m.text),
+      response.def[0].text,
+      response.def[0].pos,
+      response.def[0].tr[0].syn.map((s) => s.text),
+      response.def[0].tr[0].mean.map((m) => m.text),
       {
-        text: response.definitions[0].tr[0].ex[0].text,
-        translated: response.definitions[0].tr[0].ex[0].tr[0].text,
+        text: response.def[0].tr[0].ex[0].text,
+        translated: response.def[0].tr[0].ex[0].tr[0].text,
       },
     );
   }

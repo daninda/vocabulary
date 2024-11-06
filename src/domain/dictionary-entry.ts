@@ -1,3 +1,4 @@
+import { PartOfSpeech } from '@shared/types/parts-of-speech';
 import { v4 as uuidv4 } from 'uuid';
 
 export class DictionaryEntry {
@@ -5,7 +6,7 @@ export class DictionaryEntry {
     public id: string,
     public dictionaryId: string,
     public word: string,
-    public pos: string,
+    public pos: PartOfSpeech,
     public translated: {
       word: string;
       pos: string;
@@ -18,18 +19,19 @@ export class DictionaryEntry {
     },
     public rating: number,
 
-    public createAt: string,
-    public updateAt: string,
+    public createAt: Date,
+    public updateAt: Date,
   ) {}
 
   changeRating(rating: number): void {
     this.rating += rating;
+    this.updateAt = new Date();
   }
 
   static create(
     dictionaryId: string,
     word: string,
-    pos: string,
+    pos: PartOfSpeech,
     translated: {
       word: string;
       pos: string;
@@ -48,8 +50,8 @@ export class DictionaryEntry {
       pos,
       translated,
       0,
-      new Date().toUTCString(),
-      new Date().toUTCString(),
+      new Date(),
+      new Date(),
     );
   }
 }

@@ -9,6 +9,6 @@ export class FindByIdDictionaryInput {
 export class FindByIdDictionaryOutput {
   id: string;
   name: string;
-  createAt: string;
-  updateAt: string;
+  createAt: Date;
+  updateAt: Date;
 }
