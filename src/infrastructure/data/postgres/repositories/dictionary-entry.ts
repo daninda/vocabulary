@@ -6,7 +6,7 @@ import { DictionaryEntryEntity } from '@postgres/entities/dictionary-entry';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class DictionaryRepository implements IDictionaryEntryRepository {
+export class DictionaryEntryRepository implements IDictionaryEntryRepository {
   constructor(
     @InjectRepository(DictionaryEntryEntity)
     private dictionaryEntryRepository: Repository<DictionaryEntryEntity>,
@@ -63,7 +63,7 @@ export class DictionaryRepository implements IDictionaryEntryRepository {
   async changeRating(id: string, rating: number): Promise<DictionaryEntry> {
     const dictionaryEntry = await this.findById(id);
     dictionaryEntry.changeRating(rating);
-    const res = this.save(dictionaryEntry);
+    const res = await this.save(dictionaryEntry);
     return res;
   }
 

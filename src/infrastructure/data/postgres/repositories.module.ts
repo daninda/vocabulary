@@ -7,15 +7,26 @@ import { SessionEntity } from './entities/session';
 import { UserEntity } from './entities/user';
 import { PostgresTypeOrmModule } from './postgres-typeorm.module';
 import { DictionaryRepository } from './repositories/dictionary';
+import { DictionaryEntryRepository } from './repositories/dictionary-entry';
 import { SessionRepository } from './repositories/session';
 import { UserRepository } from './repositories/user';
 
 @Module({
   imports: [
     PostgresTypeOrmModule,
-    TypeOrmModule.forFeature([DictionaryEntity, UserEntity, SessionEntity]),
+    TypeOrmModule.forFeature([
+      DictionaryEntity,
+      UserEntity,
+      SessionEntity,
+      DictionaryEntryEntity,
+    ]),
   ],
-  providers: [DictionaryRepository, UserRepository, SessionRepository],
+  providers: [
+    DictionaryRepository,
+    UserRepository,
+    SessionRepository,
+    DictionaryEntryRepository,
+  ],
   exports: [
     DictionaryRepository,
     UserRepository,
