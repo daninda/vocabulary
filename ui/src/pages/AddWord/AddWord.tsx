@@ -21,7 +21,10 @@ const AddWord: FC = () => {
             IconButton={FiArrowRight}
           />
         </div>
-        {/* <p className="font-semibold text-base text-slate-400 text-center">
+        <h2 className="w-full text-4xl font-bold text-center text-slate-800">
+          Time
+        </h2>
+        {/* <p className="text-base font-semibold text-center text-slate-400">
           Введите слово на английском, и вам будут представлены его разные формы
           с переводом и примерами использования. Добавьте нужную форму слова в
           словарь. Сохранённые слова будут доступны для изучения и выполнения

@@ -8,6 +8,7 @@ import Authorization from '../pages/Authorization/Authorization';
 import Home from '../pages/Home/Home';
 import NotFound from '../pages/NotFound/NotFound';
 import Registration from '../pages/Registration';
+import { Create, Dictionary } from '../pages/Dictionaries';
 
 const RoutesMain: FC = () => {
   return (
@@ -22,6 +23,8 @@ const RoutesMain: FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/add-word" element={<AddWord />} />
           <Route path="/about" element={<About />} />
+          <Route path="/dictionaries" element={<Dictionary />} />
+          <Route path="/dictionaries/create" element={<Create />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

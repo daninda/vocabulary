@@ -11,9 +11,9 @@ const HeaderMain: FC = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="h-20 border border-slate-300">
+    <header className={`h-[80px] border border-slate-300`}>
       <WrapperLarge>
-        <div className="flex justify-between items-center h-full">
+        <div className="flex items-center justify-between h-full">
           <Link to="/" className="flex gap-x-2">
             <PiLetterCircleVFill size={32} />
             <div className="text-2xl font-extrabold text-slate-800">
