@@ -1,8 +1,8 @@
 export interface IYaDictionaryResponse {
-  def: Definition[];
+  def: IYaDictionaryDefinition[];
 }
 
-interface Definition {
+export interface IYaDictionaryDefinition {
   text: string;
   pos: string;
   tr: Translation[];

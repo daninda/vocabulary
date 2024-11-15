@@ -10,8 +10,8 @@ export class DictionaryEntry {
     public translated: {
       word: string;
       pos: string;
-      synonims: string[];
-      means: string[];
+      synonims?: string[];
+      means?: string[];
       example?: {
         text: string;
         translated: string;
@@ -35,8 +35,8 @@ export class DictionaryEntry {
     translated: {
       word: string;
       pos: string;
-      synonims: string[];
-      means: string[];
+      synonims?: string[];
+      means?: string[];
       example?: {
         text: string;
         translated: string;

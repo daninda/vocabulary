@@ -11,6 +11,7 @@ import { CreateDictionaryEntryUseCase } from '@usecases/dictionary-entry/create.
 import { DeleteDictionayEntryUsecase } from '@usecases/dictionary-entry/delete.usecase';
 import { FindAllDictionaryEntryUseCase } from '@usecases/dictionary-entry/find-all.usecase';
 import { FindByIdDictionayEntryUsecase } from '@usecases/dictionary-entry/find-by-id.usecase';
+import { LookupDictionaryEntryUsecase } from '@usecases/dictionary-entry/lookup.usecase';
 import { RatingDownDictionaryEntryUsecase } from '@usecases/dictionary-entry/rating-down.usecase';
 import { RatingUpDictionaryEntryUsecase } from '@usecases/dictionary-entry/rating-up.usecase';
 
@@ -27,6 +28,7 @@ import { AuthModule } from './auth';
     DeleteDictionayEntryUsecase,
     RatingUpDictionaryEntryUsecase,
     RatingDownDictionaryEntryUsecase,
+    LookupDictionaryEntryUsecase,
     {
       provide: IDictionaryEntryRepository,
       useClass: DictionaryEntryRepository,

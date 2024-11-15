@@ -1,7 +1,11 @@
 import { IYaDictionaryService } from '@application/services/ya-dictionary.interface';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IYaDictionaryResponse } from '@shared/types/ya-dictionary.response';
+import { PartOfSpeech } from '@shared/types/parts-of-speech';
+import {
+  IYaDictionaryDefinition,
+  IYaDictionaryResponse,
+} from '@shared/types/ya-dictionary.response';
 
 @Injectable()
 export class YaDictionaryService implements IYaDictionaryService {
@@ -25,5 +29,19 @@ export class YaDictionaryService implements IYaDictionaryService {
     const resjson = await res.json();
 
     return resjson as IYaDictionaryResponse;
+  }
+
+  async lookupOne(
+    text: string,
+    partOfSpeech: PartOfSpeech,
+  ): Promise<IYaDictionaryDefinition> {
+    const response = await this.lookup(text);
+    const definitions = response.def.filter((d) => d.pos === partOfSpeech);
+
+    if (definitions.length === 0) {
+      return null;
+    }
+
+    return definitions[0];
   }
 }

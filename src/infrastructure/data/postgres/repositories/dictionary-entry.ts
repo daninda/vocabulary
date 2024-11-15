@@ -127,8 +127,9 @@ export class DictionaryEntryRepository implements IDictionaryEntryRepository {
     dictionaryEntryEntity.tr_word = dictionaryEntry.translated.word;
     dictionaryEntryEntity.tr_pos = dictionaryEntry.translated.pos;
     dictionaryEntryEntity.tr_synonims =
-      dictionaryEntry.translated.synonims.join(',');
-    dictionaryEntryEntity.tr_means = dictionaryEntry.translated.means.join(',');
+      dictionaryEntry.translated.synonims?.join(',');
+    dictionaryEntryEntity.tr_means =
+      dictionaryEntry.translated.means?.join(',');
     dictionaryEntryEntity.tr_example =
       dictionaryEntry.translated.example?.text +
       '/' +

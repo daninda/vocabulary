@@ -2,7 +2,7 @@ import { IDictionaryEntryRepository } from '@application/repositories/dictionary
 import { IYaDictionaryService } from '@application/services/ya-dictionary.interface';
 import { DictionaryEntry } from '@domain/dictionary-entry';
 import { Injectable } from '@nestjs/common';
-import { getPartOfSpeech } from '@shared/types/parts-of-speech';
+import { getPartOfSpeech, PartOfSpeech } from '@shared/types/parts-of-speech';
 import { Result } from '@shared/utils/result';
 
 @Injectable()
@@ -15,30 +15,29 @@ export class CreateDictionaryEntryUseCase {
   async execute(
     dictionaryId: string,
     word: string,
+    partOfSpeech: PartOfSpeech,
   ): Promise<Result<DictionaryEntry>> {
-    const res = await this.yaDictionaryService.lookup(word);
+    const res = await this.yaDictionaryService.lookupOne(word, partOfSpeech);
     if (!res) {
       return Result.failure(`Cannot lookup word`);
     }
 
-    console.log(res.def[0].tr);
-
-    const withExample = res.def[0].tr[0].ex != undefined;
+    const withExample = res.tr[0].ex != undefined;
 
     const newDictionaryEntry = DictionaryEntry.create(
       dictionaryId,
-      res.def[0].text,
-      getPartOfSpeech(res.def[0].pos),
+      res.text,
+      getPartOfSpeech(res.pos),
       {
-        word: res.def[0].tr[0].text,
-        pos: res.def[0].tr[0].pos,
-        synonims: res.def[0].tr[0].syn.map((s) => s.text),
-        means: res.def[0].tr[0].mean.map((m) => m.text),
+        word: res.tr[0].text,
+        pos: res.tr[0].pos,
+        synonims: res.tr[0].syn?.map((s) => s.text),
+        means: res.tr[0].mean?.map((m) => m.text),
         example: !withExample
           ? undefined
           : {
-              text: res.def[0].tr[0].ex[0].text,
-              translated: res.def[0].tr[0].ex[0].tr[0].text,
+              text: res.tr[0].ex[0].text,
+              translated: res.tr[0].ex[0].tr[0].text,
             },
       },
     );

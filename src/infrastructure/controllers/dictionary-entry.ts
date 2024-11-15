@@ -16,6 +16,10 @@ import {
   FindByIdDictionaryEntryOutput,
 } from '@dtos/dictionary-entry/find-by-id.dto';
 import {
+  LookupDictionaryEntryInput,
+  LookupDictionaryEntryOutput,
+} from '@dtos/dictionary-entry/lookup.dto';
+import {
   RatingDictionaryEntryInput,
   RatingDictionaryEntryOutput,
 } from '@dtos/dictionary-entry/rating.dto';
@@ -26,6 +30,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Post,
   Put,
@@ -37,6 +42,7 @@ import { CreateDictionaryEntryUseCase } from '@usecases/dictionary-entry/create.
 import { DeleteDictionayEntryUsecase } from '@usecases/dictionary-entry/delete.usecase';
 import { FindAllDictionaryEntryUseCase } from '@usecases/dictionary-entry/find-all.usecase';
 import { FindByIdDictionayEntryUsecase } from '@usecases/dictionary-entry/find-by-id.usecase';
+import { LookupDictionaryEntryUsecase } from '@usecases/dictionary-entry/lookup.usecase';
 import { RatingDownDictionaryEntryUsecase } from '@usecases/dictionary-entry/rating-down.usecase';
 import { RatingUpDictionaryEntryUsecase } from '@usecases/dictionary-entry/rating-up.usecase';
 
@@ -51,7 +57,22 @@ export class DictionaryEntryController {
     private readonly changeDictionaryDictionaryEntryUseCase: ChangeDictionaryDictionaryEntryUseCase,
     private readonly ratingUpDictionaryEntryUseCase: RatingUpDictionaryEntryUsecase,
     private readonly ratingDownDictionaryEntryUseCase: RatingDownDictionaryEntryUsecase,
+    private readonly lookupDictionaryEntryUseCase: LookupDictionaryEntryUsecase,
   ) {}
+
+  @Post('lookup')
+  @HttpCode(200)
+  async lookupDictionaryEntry(
+    @Body() dto: LookupDictionaryEntryInput,
+  ): Promise<LookupDictionaryEntryOutput> {
+    const result = await this.lookupDictionaryEntryUseCase.execute(dto.word);
+
+    if (!result.isSuccess) {
+      throw new BadRequestException(result.error);
+    }
+
+    return result.value;
+  }
 
   @Post()
   async createDictionaryEntry(
@@ -60,6 +81,7 @@ export class DictionaryEntryController {
     const result = await this.createDictionaryEntryUseCase.execute(
       dto.dictionaryId,
       dto.word,
+      dto.partOfSpeech,
     );
 
     if (!result.isSuccess) {
