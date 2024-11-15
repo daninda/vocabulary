@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 
 interface Props {
   text: string;
@@ -11,7 +11,10 @@ const ButtonMain: FC<Props> = ({ text, type, onClick, className }) => {
   return (
     <button
       type={type}
-      onClick={onClick}
+      onClick={(e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        onClick?.();
+      }}
       className={`w-full text-base px-4 font-bold text-white h-12 bg-blue-500 rounded-2xl hover:bg-blue-400 focus:outline-none focus:ring-1 transition-colors focus:ring-blue-500 ${className}`}
     >
       {text}
