@@ -41,6 +41,8 @@ export class AuthController {
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: 'none',
+      secure: true,
     });
 
     return { accessToken: tokens.accessToken };
@@ -61,6 +63,8 @@ export class AuthController {
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: 'none',
+      secure: true,
     });
     return { accessToken: tokens.accessToken };
   }
@@ -89,6 +93,8 @@ export class AuthController {
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: 'none',
+      secure: true,
     });
 
     return { accessToken: tokens.accessToken };
@@ -111,7 +117,10 @@ export class AuthController {
     if (!result.isSuccess) {
       throw new BadRequestException(result.error);
     }
-    res.clearCookie('refreshToken');
+    res.clearCookie('refreshToken', {
+      sameSite: 'none',
+      secure: true,
+    });
     return null;
   }
 }
