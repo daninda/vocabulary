@@ -18,12 +18,12 @@ const DictionarySelection: FC = () => {
   ];
 
   return (
-    <div className="w-full flex flex-col gap-y-4">
-      <p className="font-bold text-slate-800 text-2xl">Выбор словаря</p>
+    <div className="flex flex-col w-full gap-y-4">
+      <p className="text-2xl font-bold text-slate-800">Выбор словаря</p>
 
       <div className="flex flex-row gap-x-4">
         {mockData.map((item) => (
-          <Button id={item.id} title={item.title} />
+          <Button key={item.id} id={item.id} title={item.title} />
         ))}
       </div>
     </div>

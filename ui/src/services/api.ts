@@ -3,6 +3,7 @@ import fingerprintjs from '@fingerprintjs/fingerprintjs';
 
 const api = axios.create({
   baseURL: 'http://localhost:3000',
+  withCredentials: true,
 });
 
 const fpInstance = await fingerprintjs.load();

@@ -1,12 +1,22 @@
 import { FC } from 'react';
 import Item from './Item';
+import { IDictionaryEntry } from '../../../utils/types';
 
-const Results: FC = () => {
+interface Props {
+  results: IDictionaryEntry[];
+}
+
+const Results: FC<Props> = ({ results }) => {
   return (
-    <div className="flex flex-col gap-y-8 w-full">
-      <Item />
-      <Item />
-      <Item />
+    <div className="flex flex-col w-full gap-y-8">
+      {results.map((item) => (
+        <Item
+          key={item.id}
+          word={item.word}
+          pos={item.pos}
+          translated={item.translated}
+        />
+      ))}
     </div>
   );
 };

@@ -2,29 +2,21 @@ import { FC, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import InputField from '../../components/Input/Field';
 import ButtonDefault from '../../components/Button/Main';
-import { useMutation } from '@tanstack/react-query';
-import { AuthService, registerInput } from '../../services/auth';
+import { useAppDispatch } from '../../utils/hooks';
+import { register } from '../../store/slices/auth';
 
 const Registration: FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const mutation = useMutation<unknown, Error, registerInput>({
-    mutationFn: (data) => AuthService.register(data),
-    onSuccess: () => {
-      console.log('User registered');
-    },
-    onError: () => {
-      console.log('User not registered');
-    },
-  });
+  const dispatch = useAppDispatch();
 
   const handleSubmit = useCallback(
     async (name: string, email: string, password: string) => {
-      mutation.mutate({ name, email, password });
+      dispatch(register({ name, email, password }));
     },
-    [mutation],
+    [dispatch],
   );
 
   return (

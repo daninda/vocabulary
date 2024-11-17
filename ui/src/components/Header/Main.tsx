@@ -6,9 +6,12 @@ import { PiLetterCircleVFill } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import WrapperLarge from '../Wrapper/Large';
+import { useAppDispatch } from '../../utils/hooks';
+import { logout } from '../../store/slices/auth';
 
 const HeaderMain: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   return (
     <header className={`h-[80px] border border-slate-300`}>
@@ -34,7 +37,12 @@ const HeaderMain: FC = () => {
             />
 
             <IconButton Icon={FiSearch} />
-            <IconButton Icon={FiMenu} />
+            <IconButton
+              Icon={FiMenu}
+              onClick={() => {
+                dispatch(logout());
+              }}
+            />
           </div>
         </div>
       </WrapperLarge>

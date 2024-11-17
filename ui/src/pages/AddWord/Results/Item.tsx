@@ -1,24 +1,40 @@
 import { FC } from 'react';
 import Button from './Button';
 import Info from './Info';
+import { IPartOfSpeech } from '../../../utils/types';
 
-const Item: FC = () => {
+interface Props {
+  word: string;
+  pos: IPartOfSpeech;
+  translated: {
+    word: string;
+    pos: string;
+    synonims?: string[];
+    means?: string[];
+    example?: {
+      text: string;
+      translated: string;
+    };
+  };
+}
+
+const Item: FC<Props> = ({ pos, translated }) => {
   return (
     <div className="flex flex-col gap-y-4">
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row items-center justify-between">
         <div className="flex flex-col gap-y-1">
-          <p className="text-slate-800 font-bold text-2xl">Время</p>
-          <p className="text-slate-400 font-semibold text-base">noun</p>
+          <p className="text-2xl font-bold text-slate-800">{translated.word}</p>
+          <p className="text-base font-semibold text-slate-400">{pos}</p>
         </div>
         <Button />
       </div>
-      <div className="flex flex-col gap-y-3 w-full border-t py-2 border-slate-300">
+      <div className="flex flex-col w-full py-2 border-t gap-y-3 border-slate-300">
+        <Info title="Синонимы" text={translated.synonims?.join(', ') || ''} />
+        <Info title="Значение" text={translated.means?.join(', ') || ''} />
         <Info
-          title="Синонимы"
-          text="noun, adjective, adverb, verb, adjective"
+          title="Примеры использования"
+          text={translated.example?.text || ''}
         />
-        <Info title="Значение" text="adverb" />
-        <Info title="Примеры использования" text="adjective" />
       </div>
     </div>
   );

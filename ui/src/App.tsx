@@ -1,14 +1,16 @@
 import { FC } from 'react';
 import RoutesMain from './routes/Main';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const queryClient = new QueryClient();
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 const App: FC = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RoutesMain />
-    </QueryClientProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <RoutesMain />
+      </BrowserRouter>
+    </Provider>
   );
 };
 
