@@ -11,7 +11,7 @@ const Results: FC<Props> = ({ results }) => {
     <div className="flex flex-col w-full gap-y-8">
       {results.map((item) => (
         <Item
-          key={item.id}
+          key={item.word + item.pos}
           word={item.word}
           pos={item.pos}
           translated={item.translated}

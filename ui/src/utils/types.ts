@@ -28,3 +28,10 @@ export interface IDictionaryEntry {
   createAt: Date;
   updateAt: Date;
 }
+
+export interface IDictionary {
+  id: string;
+  name: string;
+  createAt: Date;
+  updateAt: Date;
+}

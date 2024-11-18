@@ -11,6 +11,19 @@ const lookup = async (data: ILookupInput) => {
   });
 };
 
+export interface IFindAllInput {
+  dictionaryId: string;
+}
+export type IFindAllOutput = IDictionaryEntry[];
+const findAll = async (data: IFindAllInput) => {
+  return await api.get<ILookupOutput>('/api/dictionary-entries', {
+    params: {
+      dictionaryId: data.dictionaryId,
+    },
+  });
+};
+
 export const DictionaryEntryService = {
   lookup,
+  findAll,
 };

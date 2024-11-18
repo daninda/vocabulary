@@ -26,7 +26,7 @@ const Item: FC<Props> = ({ pos, translated }) => {
           <p className="text-2xl font-bold text-slate-800">{translated.word}</p>
           <p className="text-base font-semibold text-slate-400">{pos}</p>
         </div>
-        <Button />
+        <Button added />
       </div>
       <div className="flex flex-col w-full py-2 border-t gap-y-3 border-slate-300">
         <Info title="Синонимы" text={translated.synonims?.join(', ') || ''} />

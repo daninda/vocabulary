@@ -11,6 +11,7 @@ const AddWord: FC = () => {
   const [search, setSearch] = useState('');
 
   const dispatch = useAppDispatch();
+
   const { results } = useAppSelector((state) => state.addWord);
 
   return (
@@ -31,17 +32,30 @@ const AddWord: FC = () => {
             onClick={() => dispatch(lookup({ word: search }))}
           />
         </div>
-        <h2 className="w-full text-4xl font-bold text-center text-slate-800">
-          Time
-        </h2>
-        {/* <p className="text-base font-semibold text-center text-slate-400">
-          Введите слово на английском, и вам будут представлены его разные формы
-          с переводом и примерами использования. Добавьте нужную форму слова в
-          словарь. Сохранённые слова будут доступны для изучения и выполнения
-          тестов.
-        </p> */}
-        <DictionarySelection />
-        <Results results={results} />
+        {results != null ? (
+          <>
+            {results.length === 0 ? (
+              <p className="text-base font-semibold text-center text-slate-400">
+                Ничего не нашлось
+              </p>
+            ) : (
+              <>
+                <h2 className="w-full text-4xl font-bold text-center text-slate-800">
+                  {results[0].word}
+                </h2>
+                <DictionarySelection />
+                <Results results={results} />
+              </>
+            )}
+          </>
+        ) : (
+          <p className="text-base font-semibold text-center text-slate-400">
+            Введите слово на английском, и вам будут представлены его разные
+            формы с переводом и примерами использования. Добавьте нужную форму
+            слова в словарь. Сохранённые слова будут доступны для изучения и
+            выполнения тестов.
+          </p>
+        )}
       </div>
     </WrapperSmall>
   );

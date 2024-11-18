@@ -8,14 +8,14 @@ import {
 } from '../../services/dictionary-entry';
 
 interface InitialState {
-  results: IDictionaryEntry[];
+  results: IDictionaryEntry[] | null;
   isLoading: boolean;
   errorMessage: string;
 }
 
 const initialState: InitialState = {
   errorMessage: '',
-  results: [],
+  results: null,
   isLoading: true,
 };
 
@@ -24,17 +24,19 @@ export const addWordSlice = createAppSlice({
   initialState,
   reducers: (create) => ({
     lookup: create.asyncThunk<
-      ILookupOutput | undefined,
+      ILookupOutput,
       ILookupInput,
-      { rejectValue: { error: string } }
+      { rejectValue: string }
     >(
-      async (data, config): Promise<ILookupOutput | undefined> => {
+      async (data, config) => {
         try {
           const res = await DictionaryEntryService.lookup(data);
           return res.data;
         } catch (error) {
           if (error instanceof AxiosError) {
-            throw config.rejectWithValue(error.response?.data.message);
+            return config.rejectWithValue(error.response?.data.message);
+          } else {
+            return config.rejectWithValue('Something went wrong');
           }
         }
       },
@@ -50,7 +52,7 @@ export const addWordSlice = createAppSlice({
         },
         rejected: (state, action) => {
           state.errorMessage = action.error.message || 'Something went wrong';
-          state.results = [];
+          state.results = null;
           state.isLoading = false;
         },
       },
