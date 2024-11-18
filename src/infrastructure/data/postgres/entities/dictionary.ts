@@ -21,7 +21,7 @@ export class DictionaryEntity {
   @JoinTable({ name: 'user_id' })
   user: UserEntity;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @OneToMany(
