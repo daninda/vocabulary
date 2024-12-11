@@ -10,9 +10,7 @@ const Dictionary: FC = () => {
           <Sidebar />
         </div>
         <div className="col-span-2 mt-12">
-          <h2 className="text-4xl font-bold text-slate-800">
-            Создание нового словаря
-          </h2>
+          <h2 className="text-4xl font-bold text-slate-800"></h2>
         </div>
       </div>
     </WrapperLarge>

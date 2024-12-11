@@ -2,9 +2,8 @@ import { FC, useState } from 'react';
 import { FiSearch, FiArrowRight } from 'react-icons/fi';
 import InputField from '../../components/Input/Field';
 import WrapperSmall from '../../components/Wrapper/Small';
-import DictionarySelection from './DictionarySelection/DictionarySelection';
 import Results from './Results/Results';
-import { useAppDispatch, useAppSelector } from '../../utils/hooks';
+import { useAppDispatch } from '../../utils/hooks';
 import { lookup } from '../../store/slices/add-word';
 
 const AddWord: FC = () => {
@@ -12,7 +11,9 @@ const AddWord: FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const { results } = useAppSelector((state) => state.addWord);
+  const onLookup = () => {
+    dispatch(lookup({ word: search }));
+  };
 
   return (
     <WrapperSmall>
@@ -29,33 +30,10 @@ const AddWord: FC = () => {
             IconButton={FiArrowRight}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            onClick={() => dispatch(lookup({ word: search }))}
+            onClick={() => onLookup()}
           />
         </div>
-        {results != null ? (
-          <>
-            {results.length === 0 ? (
-              <p className="text-base font-semibold text-center text-slate-400">
-                Ничего не нашлось
-              </p>
-            ) : (
-              <>
-                <h2 className="w-full text-4xl font-bold text-center text-slate-800">
-                  {results[0].word}
-                </h2>
-                <DictionarySelection />
-                <Results results={results} />
-              </>
-            )}
-          </>
-        ) : (
-          <p className="text-base font-semibold text-center text-slate-400">
-            Введите слово на английском, и вам будут представлены его разные
-            формы с переводом и примерами использования. Добавьте нужную форму
-            слова в словарь. Сохранённые слова будут доступны для изучения и
-            выполнения тестов.
-          </p>
-        )}
+        <Results />
       </div>
     </WrapperSmall>
   );

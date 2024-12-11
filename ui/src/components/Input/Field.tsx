@@ -26,6 +26,12 @@ const InputField: FC<Props> = ({
   value,
   onChange,
 }) => {
+  const onEnterDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onClick?.();
+    }
+  };
+
   return (
     <div>
       {label && (
@@ -44,6 +50,7 @@ const InputField: FC<Props> = ({
           />
         )}
         <input
+          onKeyDown={onEnterDown}
           type={type}
           id={id}
           className={`z-0 w-full text-slate-800 text-sm font-semibold placeholder:text-slate-400 placeholder:font-semibold placeholder:text-sm h-12 px-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-1 focus:ring-blue-500 ${Icon ? 'pl-12' : ''} ${IconButton ? 'pr-12' : ''}`}

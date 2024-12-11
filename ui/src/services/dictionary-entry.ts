@@ -23,7 +23,45 @@ const findAll = async (data: IFindAllInput) => {
   });
 };
 
+export interface ICheckexistenceInput {
+  dictionaryId: string;
+  checkWords: {
+    word: string;
+    pos: string;
+  }[];
+}
+export interface ICheckexistenceOutput {
+  existenceWords: {
+    checkWord: {
+      word: string;
+      pos: string;
+    };
+    exist: boolean;
+  }[];
+}
+const checkExistence = async (data: ICheckexistenceInput) => {
+  return await api.post<ICheckexistenceOutput>(
+    '/api/dictionary-entries/check-existence',
+    {
+      dictionaryId: data.dictionaryId,
+      checkWords: data.checkWords,
+    },
+  );
+};
+
+export interface IAddWordInput {
+  dictionaryId: string;
+  word: string;
+  partOfSpeech: string;
+}
+export type IAddWordOutput = IDictionaryEntry;
+export const addWord = async (data: IAddWordInput) => {
+  return await api.post<IAddWordOutput>('/api/dictionary-entries', data);
+};
+
 export const DictionaryEntryService = {
   lookup,
   findAll,
+  checkExistence,
+  addWord,
 };
