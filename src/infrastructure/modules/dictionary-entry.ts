@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { RepositoriesModule } from '@postgres/repositories.module';
 import { DictionaryEntryRepository } from '@postgres/repositories/dictionary-entry';
 import { ChangeDictionaryDictionaryEntryUseCase } from '@usecases/dictionary-entry/change-dictionary.usecase';
+import { CheckExistingDictionaryEntryUseCase } from '@usecases/dictionary-entry/check-existence.usecase';
 import { CreateDictionaryEntryUseCase } from '@usecases/dictionary-entry/create.usecase';
 import { DeleteDictionayEntryUsecase } from '@usecases/dictionary-entry/delete.usecase';
 import { FindAllDictionaryEntryUseCase } from '@usecases/dictionary-entry/find-all.usecase';
@@ -29,6 +30,7 @@ import { AuthModule } from './auth';
     RatingUpDictionaryEntryUsecase,
     RatingDownDictionaryEntryUsecase,
     LookupDictionaryEntryUsecase,
+    CheckExistingDictionaryEntryUseCase,
     {
       provide: IDictionaryEntryRepository,
       useClass: DictionaryEntryRepository,

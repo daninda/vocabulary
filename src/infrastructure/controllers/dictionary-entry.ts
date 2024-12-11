@@ -3,6 +3,10 @@ import {
   ChangeDictionaryDictionaryEntryOutput,
 } from '@dtos/dictionary-entry/change-dictionary.dto';
 import {
+  CheckExistingDictionaryEntryInput,
+  CheckExistingDictionaryEntryOutput,
+} from '@dtos/dictionary-entry/check-existence.dto';
+import {
   CreateDictionaryEntryInput,
   CreateDictionaryEntryOutput,
 } from '@dtos/dictionary-entry/create.dto';
@@ -38,6 +42,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ChangeDictionaryDictionaryEntryUseCase } from '@usecases/dictionary-entry/change-dictionary.usecase';
+import { CheckExistingDictionaryEntryUseCase } from '@usecases/dictionary-entry/check-existence.usecase';
 import { CreateDictionaryEntryUseCase } from '@usecases/dictionary-entry/create.usecase';
 import { DeleteDictionayEntryUsecase } from '@usecases/dictionary-entry/delete.usecase';
 import { FindAllDictionaryEntryUseCase } from '@usecases/dictionary-entry/find-all.usecase';
@@ -58,6 +63,7 @@ export class DictionaryEntryController {
     private readonly ratingUpDictionaryEntryUseCase: RatingUpDictionaryEntryUsecase,
     private readonly ratingDownDictionaryEntryUseCase: RatingDownDictionaryEntryUsecase,
     private readonly lookupDictionaryEntryUseCase: LookupDictionaryEntryUsecase,
+    private readonly checkExistingDictionaryEntryUseCase: CheckExistingDictionaryEntryUseCase,
   ) {}
 
   @Post('lookup')
@@ -166,6 +172,22 @@ export class DictionaryEntryController {
     @Body() dto: RatingDictionaryEntryInput,
   ): Promise<RatingDictionaryEntryOutput> {
     const result = await this.ratingDownDictionaryEntryUseCase.execute(dto.id);
+
+    if (!result.isSuccess) {
+      throw new BadRequestException(result.error);
+    }
+
+    return result.value;
+  }
+
+  @Post('/check-existence')
+  async checkExistingDictionaryEntry(
+    @Body() dto: CheckExistingDictionaryEntryInput,
+  ): Promise<CheckExistingDictionaryEntryOutput> {
+    const result = await this.checkExistingDictionaryEntryUseCase.execute({
+      checkWords: dto.checkWords,
+      dictionaryId: dto.dictionaryId,
+    });
 
     if (!result.isSuccess) {
       throw new BadRequestException(result.error);
