@@ -11,6 +11,7 @@ import { Create, Dictionary } from '../pages/Dictionaries';
 import { useAppDispatch, useAppSelector } from '../utils/hooks';
 import { refresh } from '../store/slices/auth';
 import Loader from '../pages/Loader';
+import Test from '../pages/Test';
 
 const RoutesMain: FC = () => {
   const dispatch = useAppDispatch();
@@ -41,6 +42,7 @@ const RoutesMain: FC = () => {
           <Route path="/about" element={<About />} />
           <Route path="/dictionaries" element={<Dictionary />} />
           <Route path="/dictionaries/create" element={<Create />} />
+          <Route path="/test" element={<Test />} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

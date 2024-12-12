@@ -1,13 +1,24 @@
 import { FC, useEffect } from 'react';
 import Item from './Item';
 import { FiPlus } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../utils/hooks';
-import { findAll } from '../../../store/slices/dictionaries';
+import {
+  findAll,
+  getDictionaryEntries,
+} from '../../../store/slices/dictionaries';
 
 const Sidebar: FC = () => {
-  const { dictionaries } = useAppSelector((state) => state.dictionaries);
+  const { dictionaries, selectedDictionaryId } = useAppSelector(
+    (state) => state.dictionaries,
+  );
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const onItemSelect = (id: string) => {
+    dispatch(getDictionaryEntries(id));
+    navigate('/dictionaries');
+  };
 
   useEffect(() => {
     dispatch(findAll());
@@ -23,7 +34,14 @@ const Sidebar: FC = () => {
           {dictionaries == null || dictionaries.length == 0 ? (
             <p className="font-semibold text-slate-400">Здесь пусто</p>
           ) : (
-            dictionaries.map((item) => <Item key={item.id} text={item.name} />)
+            dictionaries.map((item) => (
+              <Item
+                key={item.id}
+                text={item.name}
+                onClick={() => onItemSelect(item.id)}
+                selected={item.id == selectedDictionaryId}
+              />
+            ))
           )}
         </div>
         <div className="flex flex-row items-center w-full h-20 gap-x-3 min-h-20 text-slate-800 hover:text-blue-500 focus:outline-none">

@@ -38,7 +38,7 @@ const Results: FC = () => {
         </p>
       ) : (
         <>
-          <h2 className="w-full text-4xl font-bold text-center text-slate-800">
+          <h2 className="w-full text-4xl font-bold text-center transition-opacity text-slate-800">
             {results[0].word}
           </h2>
           <DictionarySelection />

@@ -30,7 +30,7 @@ const HeaderMain: FC = () => {
               onClick={() => navigate('/add-word')}
               text="Добавить слово"
             />
-            <TextButton onClick={() => navigate('/tests')} text="Тесты" />
+            <TextButton onClick={() => navigate('/test')} text="Тесты" />
             <TextButton
               onClick={() => navigate('/dictionaries')}
               text="Словари"

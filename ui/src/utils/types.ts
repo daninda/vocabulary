@@ -35,3 +35,5 @@ export interface IDictionary {
   createAt: Date;
   updateAt: Date;
 }
+
+export type Status = 'correct' | 'incorrect' | 'default';

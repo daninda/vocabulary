@@ -16,7 +16,7 @@ export interface IFindAllInput {
 }
 export type IFindAllOutput = IDictionaryEntry[];
 const findAll = async (data: IFindAllInput) => {
-  return await api.get<ILookupOutput>('/api/dictionary-entries', {
+  return await api.get<IFindAllOutput>('/api/dictionary-entries', {
     params: {
       dictionaryId: data.dictionaryId,
     },
@@ -55,8 +55,28 @@ export interface IAddWordInput {
   partOfSpeech: string;
 }
 export type IAddWordOutput = IDictionaryEntry;
-export const addWord = async (data: IAddWordInput) => {
+const addWord = async (data: IAddWordInput) => {
   return await api.post<IAddWordOutput>('/api/dictionary-entries', data);
+};
+
+export interface IRatingUpInout {
+  id: string;
+}
+export type IRatingUpOutput = IDictionaryEntry;
+const ratingUp = async (data: IRatingUpInout) => {
+  return await api.put<IRatingUpOutput>('/api/dictionary-entries/rating-up', {
+    id: data.id,
+  });
+};
+
+export interface IRatingDownInout {
+  id: string;
+}
+export type IRatingDownOutput = IDictionaryEntry;
+const ratingDown = async (data: IRatingUpInout) => {
+  return await api.put<IRatingUpOutput>('/api/dictionary-entries/rating-down', {
+    id: data.id,
+  });
 };
 
 export const DictionaryEntryService = {
@@ -64,4 +84,6 @@ export const DictionaryEntryService = {
   findAll,
   checkExistence,
   addWord,
+  ratingUp,
+  ratingDown,
 };

@@ -33,12 +33,18 @@ const Item: FC<Props> = ({ pos, translated, onClick, isAdded, disabled }) => {
         <Button onClick={onClick} added={isAdded} disabled={disabled} />
       </div>
       <div className="flex flex-col w-full py-2 border-t gap-y-3 border-slate-300">
-        <Info title="Синонимы" text={translated.synonims?.join(', ') || ''} />
-        <Info title="Значение" text={translated.means?.join(', ') || ''} />
-        <Info
-          title="Примеры использования"
-          text={translated.example?.text || ''}
-        />
+        {translated.synonims && (
+          <Info title="Синонимы" text={translated.synonims?.join(', ') || ''} />
+        )}
+        {translated.means && (
+          <Info title="Значение" text={translated.means?.join(', ') || ''} />
+        )}
+        {translated.example?.text && (
+          <Info
+            title="Пример использования"
+            text={translated.example?.translated || ''}
+          />
+        )}
       </div>
     </div>
   );
