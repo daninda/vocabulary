@@ -71,7 +71,7 @@ export class DictionaryEntryRepository implements IDictionaryEntryRepository {
   async findForTestByDictionary(
     dictionaryId: string,
   ): Promise<DictionaryEntry | null> {
-    const date = new Date(new Date().getTime() - 1000 * 60 * 60 * 24);
+    const date = new Date(new Date().getTime() - 1000 * 60 * 1);
 
     const res = await this.dictionaryEntryRepository.findOne({
       relations: ['dictionary'],

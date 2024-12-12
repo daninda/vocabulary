@@ -16,7 +16,7 @@ export class TestController {
   constructor(private readonly generateTestUseCase: GenerateTestUseCase) {}
 
   @HttpCode(200)
-  @Post('generate')
+  @Post('/generate')
   async translateText(
     @Body() dto: GenerateTestInput,
   ): Promise<GenerateTestOutput> {
