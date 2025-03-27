@@ -12,7 +12,7 @@ const Authorization: FC = () => {
   const dispatch = useAppDispatch();
 
   const handleSubmit = useCallback(
-    async (email: string, password: string) => {
+    (email: string, password: string) => {
       dispatch(login({ email, password }));
     },
     [dispatch],

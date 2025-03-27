@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vocabify</title>
+  </head>
+  <body class="flex items-center justify-center h-screen bg-white rounded-lg w-96">
+    <div
+      id="auth-container"
+      class="hidden w-full p-8"
+    >
+      <h2 class="mb-6 text-2xl font-semibold text-center">Авторизация</h2>
+      <form id="auth-form" class="space-y-4">
+        <div>
+          <label for="email" class="block text-base font-medium text-gray-800"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="text-input"
+            placeholder="Введите ваш email"
+            required
+          />
+        </div>
+        <div>
+          <label for="password" class="block text-base font-medium text-gray-800"
+            >Пароль</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="text-input"
+            placeholder="Введите ваш пароль"
+            required
+          />
+        </div>
+        <div class="flex items-center justify-between pt-4">
+          <button
+            type="submit"
+            id="login-button"
+            class="button-main"
+          >
+            Войти
+          </button>
+        </div>
+      </form>
+      <p class="mt-4 text-base text-center text-gray-800">Нет аккаунта?</p>
+      <div class='flex justify-center'>
+
+        <button
+        id="go-to-registration"
+        class="self-center mx-auto w-min button-text"
+        >
+        Зарегистрироваться
+      </button>
+    </div>
+    </div>
+
+    <div
+      id="app-container"
+      class="hidden p-8"
+    >
+      <h2 class="mb-6 text-3xl font-semibold text-center">Vocabify</h2>
+      <p class="mb-6 text-base text-center text-gray-700">
+        Добро пожаловать в Vocabify! Чтобы получить доступ ко всем возможностям приложения, перейдите на сайт.
+      </p>
+      <button
+        id="go-to-website"
+        class="button-main"
+      >
+        Перейти на сайт
+      </button>
+    </div>
+
+    <script src="popup.js""></script>
+  </body>
+</html>

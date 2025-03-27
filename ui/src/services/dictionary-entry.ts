@@ -13,14 +13,26 @@ const lookup = async (data: ILookupInput) => {
 
 export interface IFindAllInput {
   dictionaryId: string;
+  search?: string;
+  sort: string;
 }
 export type IFindAllOutput = IDictionaryEntry[];
 const findAll = async (data: IFindAllInput) => {
   return await api.get<IFindAllOutput>('/api/dictionary-entries', {
     params: {
       dictionaryId: data.dictionaryId,
+      search: data.search,
+      sort: data.sort,
     },
   });
+};
+
+export interface IDeleteInput {
+  id: string
+}
+export type IDeleteOutput = null;
+const deleteById = async (data: IDeleteInput) => {
+  return await api.delete<IDeleteOutput>(`/api/dictionary-entries/${data.id}`);
 };
 
 export interface ICheckexistenceInput {
@@ -82,6 +94,7 @@ const ratingDown = async (data: IRatingUpInout) => {
 export const DictionaryEntryService = {
   lookup,
   findAll,
+  deleteById,
   checkExistence,
   addWord,
   ratingUp,

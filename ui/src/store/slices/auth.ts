@@ -2,6 +2,7 @@ import { AxiosError } from 'axios';
 import { AuthService, ILoginInput, IRegisterInput } from '../../services/auth';
 import createAppSlice from '../createAppSlice';
 import { jwtDecode } from 'jwt-decode';
+import toast from 'react-hot-toast';
 
 interface IAuthState {
   userId: string;
@@ -25,16 +26,17 @@ export const authSlice = createAppSlice({
       state.errorMessage = action.payload;
     }),
 
-    register: create.asyncThunk<void, IRegisterInput, { rejectValue: string }>(
+    register: create.asyncThunk<
+      { userId: string },
+      IRegisterInput,
+      { rejectValue: string }
+    >(
       async (data, config) => {
         try {
           const res = await AuthService.register(data);
-          const state = config.getState() as { auth: IAuthState };
-          state.auth.userId = jwtDecode<{ userId: string }>(
-            res.data.accessToken,
-          ).userId;
+          const decoded = jwtDecode<{ userId: string }>(res.data.accessToken);
           localStorage.setItem('accessToken', res.data.accessToken);
-          return;
+          return decoded;
         } catch (error) {
           if (error instanceof AxiosError) {
             return config.rejectWithValue(error.response?.data.message);
@@ -48,8 +50,9 @@ export const authSlice = createAppSlice({
           state.errorMessage = '';
           state.isLoading = true;
         },
-        fulfilled: (state) => {
+        fulfilled: (state, action) => {
           state.errorMessage = '';
+          state.userId = action.payload.userId;
           state.isAuth = true;
           state.isLoading = false;
         },
@@ -58,20 +61,22 @@ export const authSlice = createAppSlice({
           state.isAuth = false;
           state.isLoading = false;
           state.userId = '';
+          toast.error('Пользователь с таким email уже существует');
         },
       },
     ),
 
-    login: create.asyncThunk<void, ILoginInput, { rejectValue: string }>(
+    login: create.asyncThunk<
+      { userId: string },
+      ILoginInput,
+      { rejectValue: string }
+    >(
       async (data, config) => {
         try {
           const res = await AuthService.login(data);
-          const state = config.getState() as { auth: IAuthState };
-          state.auth.userId = jwtDecode<{ userId: string }>(
-            res.data.accessToken,
-          ).userId;
+          const decoded = jwtDecode<{ userId: string }>(res.data.accessToken);
           localStorage.setItem('accessToken', res.data.accessToken);
-          return;
+          return decoded;
         } catch (error) {
           if (error instanceof AxiosError) {
             return config.rejectWithValue(error.response?.data.message);
@@ -85,9 +90,10 @@ export const authSlice = createAppSlice({
           state.errorMessage = '';
           state.isLoading = true;
         },
-        fulfilled: (state) => {
+        fulfilled: (state, action) => {
           state.errorMessage = '';
           state.isAuth = true;
+          state.userId = action.payload.userId;
           state.isLoading = false;
         },
         rejected: (state, action) => {
@@ -95,6 +101,7 @@ export const authSlice = createAppSlice({
           state.isAuth = false;
           state.isLoading = false;
           state.userId = '';
+          toast.error('Неправильная почта или пароль');
         },
       },
     ),
@@ -162,9 +169,9 @@ export const authSlice = createAppSlice({
           state.isAuth = true;
           state.isLoading = false;
         },
-        rejected: (state, action) => {
+        rejected: (state) => {
           localStorage.removeItem('accessToken');
-          state.errorMessage = action.error.message || 'Something went wrong';
+          state.errorMessage = '';
           state.isAuth = false;
           state.isLoading = false;
           state.userId = '';

@@ -31,8 +31,11 @@ export class CheckExistingDictionaryEntryUseCase {
   async execute(data: Input): Promise<Result<Output>> {
     const { checkWords, dictionaryId } = data;
 
-    const dictionaryEntries =
-      await this.dictionaryEntryRepository.findAll(dictionaryId);
+    const dictionaryEntries = await this.dictionaryEntryRepository.findAll(
+      dictionaryId,
+      'date_desc',
+      '',
+    );
 
     const existenceWords: ExistenceWord[] = checkWords.map((checkWord) => {
       const dictionaryEntry = dictionaryEntries.find(

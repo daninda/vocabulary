@@ -24,7 +24,7 @@ interface Props {
 
 const Item: FC<Props> = ({ pos, translated, onClick, isAdded, disabled }) => {
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col p-6 rounded-2xl gap-y-4 bg-slate-100">
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-col gap-y-1">
           <p className="text-2xl font-bold text-slate-800">{translated.word}</p>

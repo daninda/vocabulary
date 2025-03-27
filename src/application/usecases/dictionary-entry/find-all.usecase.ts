@@ -9,9 +9,16 @@ export class FindAllDictionaryEntryUseCase {
     private readonly dictionaryEntryRepository: IDictionaryEntryRepository,
   ) {}
 
-  async execute(dictionaryId: string): Promise<Result<DictionaryEntry[]>> {
-    const dictionaryEntries =
-      await this.dictionaryEntryRepository.findAll(dictionaryId);
+  async execute(
+    dictionaryId: string,
+    sort: string,
+    search?: string,
+  ): Promise<Result<DictionaryEntry[]>> {
+    const dictionaryEntries = await this.dictionaryEntryRepository.findAll(
+      dictionaryId,
+      sort,
+      search,
+    );
     return Result.success(dictionaryEntries);
   }
 }

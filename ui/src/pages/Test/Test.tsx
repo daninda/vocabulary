@@ -1,76 +1,93 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
+import TextButton from '../../components/Button/Text';
 import WrapperSmall from '../../components/Wrapper/Small';
+import {
+  generateTest,
+  generateWordWithErrorTest,
+  reset,
+} from '../../store/slices/test';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import DictionarySelection from './DictionarySelection/DictionarySelection';
-import Button from './Button/Button';
-import { DictionaryEntryService } from '../../services/dictionary-entry';
-import { generateTest } from '../../store/slices/test';
-import { Status } from '../../utils/types';
+import TestSelection from './TestSelection/TestSelection';
+import TranslationSelection from './testTypes/TranslationSelection/TranslationSelection';
+import WordWithError from './testTypes/WordWithError';
+import { TestType } from './types';
 
 const Test: FC = () => {
+  const [testTypeId, setTestTypeId] = useState<number>(0);
+  const [step, setStep] = useState(0);
+
   const dispatch = useAppDispatch();
-  const { dictionaryEntry, wrongWords, selectedDictionaryId } = useAppSelector(
-    (state) => state.test,
-  );
-  const [status, setStatus] = useState<Status>('default');
+  const { selectedDictionaryId } = useAppSelector((state) => state.test);
 
-  const onAnswer = (answer: string) => {
-    if (dictionaryEntry != null && selectedDictionaryId != null) {
-      if (answer == dictionaryEntry.word) {
-        DictionaryEntryService.ratingUp({ id: dictionaryEntry.id });
-        setStatus('correct');
-      } else {
-        DictionaryEntryService.ratingDown({ id: dictionaryEntry.id });
-        setStatus('incorrect');
-      }
+  useEffect(() => {
+    dispatch(reset());
+  }, [dispatch]);
 
-      const timer = setTimeout(() => {
-        dispatch(
-          generateTest({ dictionaryId: selectedDictionaryId, wrongsCount: 5 }),
-        );
-        setStatus('default');
-        clearTimeout(timer);
-      }, 3000);
+  const testTypes: TestType[] = useMemo<TestType[]>(() => {
+    return [
+      {
+        id: 1,
+        name: 'Перевод слов',
+        onClick: () => {
+          setTestTypeId(1);
+          setStep(1);
+        },
+      },
+      {
+        id: 2,
+        name: 'Исправление ошибки в слове',
+        onClick: () => {
+          setTestTypeId(2);
+          setStep(1);
+        },
+      },
+    ];
+  }, [setTestTypeId]);
+
+  useEffect(() => {
+    if (step == 2 && testTypeId == 1 && selectedDictionaryId) {
+      dispatch(
+        generateTest({ dictionaryId: selectedDictionaryId, wrongsCount: 5 }),
+      );
+    } else if (step == 2 && testTypeId == 2 && selectedDictionaryId) {
+      dispatch(
+        generateWordWithErrorTest({ dictionaryId: selectedDictionaryId }),
+      );
     }
-  };
+  }, [step, testTypeId, selectedDictionaryId, dispatch]);
 
   return (
     <WrapperSmall>
-      <div className="mt-8">
-        <DictionarySelection />
-        {dictionaryEntry == null || wrongWords == null ? (
-          <p className="mt-16 text-xl font-semibold text-center text-slate-400">
-            Нет доступных тестов
-          </p>
-        ) : null}
-        {dictionaryEntry && wrongWords && (
-          <>
-            <div className="flex justify-center mt-16">
-              <div className="flex flex-row items-center gap-x-4">
-                <p className="text-4xl font-bold text-slate-800">
-                  {dictionaryEntry.translated.word}
-                </p>
-                <p className="">({dictionaryEntry.pos})</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-5 mt-8 gap-x-4">
-              {wrongWords.map((item) => (
-                <Button
-                  status={
-                    status != 'default'
-                      ? item == dictionaryEntry.word
-                        ? 'correct'
-                        : 'incorrect'
-                      : 'default'
-                  }
-                  text={item}
-                  key={item}
-                  onClick={() => onAnswer(item)}
-                  disabled={status != 'default'}
-                />
-              ))}
-            </div>
-          </>
+      <h1 className="max-w-3xl mx-auto mt-12 text-4xl font-bold text-center text-slate-800">
+        Выполнение тестов
+      </h1>
+      {step == 0 && (
+        <p className="mt-6 text-base font-semibold text-center text-slate-400">
+          Эти тесты помогут вам закрепить новые слова и улучшить запоминание.
+        </p>
+      )}
+      <div className="mt-16">
+        {step == 0 && <TestSelection testTypes={testTypes} id={testTypeId} />}
+        {step == 1 && (
+          <DictionarySelection
+            onClick={() => {
+              setStep(2);
+            }}
+          />
+        )}
+        {step == 2 && testTypeId == 1 && <TranslationSelection />}
+        {step == 2 && testTypeId == 2 && <WordWithError />}
+        {step == 2 && (
+          <TextButton
+            className="w-full mt-16 text-blue-400"
+            text="Завершить выполнение тестов"
+            onClick={() => {
+              setStep(0);
+              dispatch(reset());
+              setTestTypeId(0);
+            }}
+          />
         )}
       </div>
     </WrapperSmall>

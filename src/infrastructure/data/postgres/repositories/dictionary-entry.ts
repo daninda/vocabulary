@@ -1,10 +1,10 @@
 import { IDictionaryEntryRepository } from '@application/repositories/dictionary-entry.interface';
 import { DictionaryEntry } from '@domain/dictionary-entry';
+import { DictionaryEntryEntity } from '@infrastructure/data/postgres/entities/dictionary-entry';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DictionaryEntryEntity } from '@postgres/entities/dictionary-entry';
 import { getPartOfSpeech } from '@shared/types/parts-of-speech';
-import { LessThan, Repository } from 'typeorm';
+import { ILike, LessThan, Repository } from 'typeorm';
 
 @Injectable()
 export class DictionaryEntryRepository implements IDictionaryEntryRepository {
@@ -23,11 +23,75 @@ export class DictionaryEntryRepository implements IDictionaryEntryRepository {
     return this.toDictionaryEntry(res);
   }
 
-  async findAll(dictionary_id: string): Promise<DictionaryEntry[]> {
-    const res = await this.dictionaryEntryRepository.find({
-      relations: ['dictionary'],
-      where: { dictionary: { id: dictionary_id } },
-    });
+  async findAll(
+    dictionary_id: string,
+    sort: string,
+    search?: string,
+  ): Promise<DictionaryEntry[]> {
+    let res: DictionaryEntryEntity[];
+    if (search) {
+      res = await this.dictionaryEntryRepository.find({
+        relations: ['dictionary'],
+        where: [
+          { dictionary: { id: dictionary_id }, word: ILike(`%${search}%`) },
+          {
+            dictionary: { id: dictionary_id },
+            tr_example: ILike(`%${search}%`),
+          },
+          { dictionary: { id: dictionary_id }, tr_means: ILike(`%${search}%`) },
+          {
+            dictionary: { id: dictionary_id },
+            tr_synonims: ILike(`%${search}%`),
+          },
+          { dictionary: { id: dictionary_id }, tr_word: ILike(`%${search}%`) },
+        ],
+        order: {
+          createAt:
+            sort === 'date_asc'
+              ? 'ASC'
+              : sort === 'date_desc'
+                ? 'DESC'
+                : undefined,
+          word:
+            sort === 'alphabet_asc'
+              ? 'ASC'
+              : sort === 'alphabet_desc'
+                ? 'DESC'
+                : undefined,
+          rating:
+            sort === 'rating_asc'
+              ? 'ASC'
+              : sort === 'rating_desc'
+                ? 'DESC'
+                : undefined,
+        },
+      });
+    } else {
+      res = await this.dictionaryEntryRepository.find({
+        relations: ['dictionary'],
+        where: { dictionary: { id: dictionary_id } },
+        order: {
+          createAt:
+            sort === 'date_asc'
+              ? 'ASC'
+              : sort === 'date_desc'
+                ? 'DESC'
+                : undefined,
+          word:
+            sort === 'alphabet_asc'
+              ? 'ASC'
+              : sort === 'alphabet_desc'
+                ? 'DESC'
+                : undefined,
+          rating:
+            sort === 'rating_asc'
+              ? 'ASC'
+              : sort === 'rating_desc'
+                ? 'DESC'
+                : undefined,
+        },
+      });
+    }
 
     return res.map((dictionaryEntry) =>
       this.toDictionaryEntry(dictionaryEntry),
@@ -71,25 +135,29 @@ export class DictionaryEntryRepository implements IDictionaryEntryRepository {
   async findForTestByDictionary(
     dictionaryId: string,
   ): Promise<DictionaryEntry | null> {
-    const date = new Date(new Date().getTime() - 1000 * 60 * 1);
+    const entry = await this.dictionaryEntryRepository
+      .createQueryBuilder('entry')
+      .leftJoinAndSelect('entry.dictionary', 'dictionary')
+      .where('dictionary.id = :dictionaryId', { dictionaryId })
+      .andWhere(
+        `
+        (
+          (entry.rating = -4 AND entry.update_at <= NOW() - INTERVAL '15 MINUTE') OR
+          (entry.rating = -3 AND entry.update_at <= NOW() - INTERVAL '1 HOUR') OR
+          (entry.rating = -2 AND entry.update_at <= NOW() - INTERVAL '3 HOUR') OR
+          (entry.rating = -1 AND entry.update_at <= NOW() - INTERVAL '1 DAY') OR
+          (entry.rating = 0 AND entry.update_at <= NOW() - INTERVAL '2 DAY') OR
+          (entry.rating = 1 AND entry.update_at <= NOW() - INTERVAL '4 DAY') OR
+          (entry.rating = 2 AND entry.update_at <= NOW() - INTERVAL '7 DAY') OR
+          (entry.rating = 3 AND entry.update_at <= NOW() - INTERVAL '14 DAY') OR
+          (entry.rating = 4 AND entry.update_at <= NOW() - INTERVAL '30 DAY')
+        )
+      `,
+      )
+      .orderBy('entry.rating', 'ASC')
+      .getOne();
 
-    const res = await this.dictionaryEntryRepository.findOne({
-      relations: ['dictionary'],
-      where: {
-        dictionary: { id: dictionaryId },
-        rating: LessThan(3),
-        updateAt: LessThan(date),
-      },
-      order: {
-        rating: 'ASC',
-      },
-    });
-
-    if (!res) {
-      return null;
-    }
-
-    return this.toDictionaryEntry(res);
+    return entry ? this.toDictionaryEntry(entry) : null;
   }
 
   async findForTest(userId: string): Promise<DictionaryEntry | null> {
@@ -124,16 +192,16 @@ export class DictionaryEntryRepository implements IDictionaryEntryRepository {
     dictionaryEntryEntity.word = dictionaryEntry.word;
     dictionaryEntryEntity.pos = dictionaryEntry.pos;
     dictionaryEntryEntity.rating = dictionaryEntry.rating;
-    dictionaryEntryEntity.tr_word = dictionaryEntry.translated.word;
-    dictionaryEntryEntity.tr_pos = dictionaryEntry.translated.pos;
+    dictionaryEntryEntity.tr_word = dictionaryEntry.translated.word || '';
+    dictionaryEntryEntity.tr_pos = dictionaryEntry.translated.pos || '';
     dictionaryEntryEntity.tr_synonims =
-      dictionaryEntry.translated.synonims?.join(',');
+      dictionaryEntry.translated.synonims?.join(',') || '';
     dictionaryEntryEntity.tr_means =
-      dictionaryEntry.translated.means?.join(',');
+      dictionaryEntry.translated.means?.join(',') || '';
     dictionaryEntryEntity.tr_example =
-      dictionaryEntry.translated.example?.text +
-      '/' +
-      dictionaryEntry.translated.example?.translated;
+      dictionaryEntry.translated.example?.text ||
+      '' + '/' + dictionaryEntry.translated.example?.translated ||
+      '';
     dictionaryEntryEntity.createAt = dictionaryEntry.createAt;
     dictionaryEntryEntity.updateAt = dictionaryEntry.updateAt;
     return dictionaryEntryEntity;

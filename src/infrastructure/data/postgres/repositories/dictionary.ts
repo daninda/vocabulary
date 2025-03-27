@@ -1,8 +1,8 @@
 import { IDictionaryRepository } from '@application/repositories/dictionary.interface';
 import { Dictionary } from '@domain/dictionary';
+import { DictionaryEntity } from '@infrastructure/data/postgres/entities/dictionary';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DictionaryEntity } from '@postgres/entities/dictionary';
 import { Repository } from 'typeorm';
 
 @Injectable()

@@ -1,11 +1,14 @@
 import { IDictionaryEntryRepository } from '@application/repositories/dictionary-entry.interface';
+import { ITestStatisticRepository } from '@application/repositories/test-statistic.interface';
+import { RatingUpdateSchedule } from '@application/schedules/rating-update';
 import { IYaDictionaryService } from '@application/services/ya-dictionary.interface';
 import { DictionaryEntryController } from '@infrastructure/controllers/dictionary-entry';
+import { RepositoriesModule } from '@infrastructure/data/postgres/repositories.module';
+import { DictionaryEntryRepository } from '@infrastructure/data/postgres/repositories/dictionary-entry';
+import { TestStatisticRepository } from '@infrastructure/data/postgres/repositories/test-statistic';
 import { YaDictionaryService } from '@infrastructure/services/ya-dictionary';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { RepositoriesModule } from '@postgres/repositories.module';
-import { DictionaryEntryRepository } from '@postgres/repositories/dictionary-entry';
 import { ChangeDictionaryDictionaryEntryUseCase } from '@usecases/dictionary-entry/change-dictionary.usecase';
 import { CheckExistingDictionaryEntryUseCase } from '@usecases/dictionary-entry/check-existence.usecase';
 import { CreateDictionaryEntryUseCase } from '@usecases/dictionary-entry/create.usecase';
@@ -22,6 +25,8 @@ import { AuthModule } from './auth';
   imports: [RepositoriesModule, AuthModule, ConfigModule],
   controllers: [DictionaryEntryController],
   providers: [
+    RatingUpdateSchedule,
+
     CreateDictionaryEntryUseCase,
     FindAllDictionaryEntryUseCase,
     FindByIdDictionayEntryUsecase,
@@ -34,6 +39,10 @@ import { AuthModule } from './auth';
     {
       provide: IDictionaryEntryRepository,
       useClass: DictionaryEntryRepository,
+    },
+    {
+      provide: ITestStatisticRepository,
+      useClass: TestStatisticRepository,
     },
     {
       provide: IYaDictionaryService,

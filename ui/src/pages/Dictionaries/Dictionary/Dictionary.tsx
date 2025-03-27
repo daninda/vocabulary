@@ -10,7 +10,7 @@ const Dictionary: FC = () => {
         <div className="relative h-full col-span-1">
           <Sidebar />
         </div>
-        <div className="col-span-2 mt-12">
+        <div className="relative h-full col-span-2">
           <DictionaryEntries />
         </div>
       </div>

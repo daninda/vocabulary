@@ -1,9 +1,10 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import InputField from '../../components/Input/Field';
 import ButtonDefault from '../../components/Button/Main';
-import { useAppDispatch } from '../../utils/hooks';
-import { register } from '../../store/slices/auth';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
+import { register, setError } from '../../store/slices/auth';
+import toast from 'react-hot-toast';
 
 const Registration: FC = () => {
   const [name, setName] = useState('');
@@ -11,6 +12,20 @@ const Registration: FC = () => {
   const [password, setPassword] = useState('');
 
   const dispatch = useAppDispatch();
+
+  const { errorMessage } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(setError(''));
+  }, [dispatch])
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error('Пользователь с такой почтой уже существует', {
+        id: 'error',
+      });
+    }
+  }, [errorMessage]);
 
   const handleSubmit = useCallback(
     async (name: string, email: string, password: string) => {

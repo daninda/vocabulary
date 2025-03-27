@@ -1,11 +1,12 @@
-import { FC, useEffect } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import Item from './Item';
 import { FiPlus } from 'react-icons/fi';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../utils/hooks';
 import {
   findAll,
   getDictionaryEntries,
+  setSelectedDictionaryId,
 } from '../../../store/slices/dictionaries';
 
 const Sidebar: FC = () => {
@@ -13,24 +14,34 @@ const Sidebar: FC = () => {
     (state) => state.dictionaries,
   );
   const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
 
-  const onItemSelect = (id: string) => {
-    dispatch(getDictionaryEntries(id));
-    navigate('/dictionaries');
-  };
+  const location = useLocation();
+  const isCreatePage = location.pathname.endsWith('/create');
+
+  const onItemSelect = useCallback(
+    (id: string) => {
+      dispatch(getDictionaryEntries({dictionaryId: id, search: '', sort: 'date_desc'}));
+      if (isCreatePage) {
+        navigate('/dictionaries');
+      }
+    },
+    [dispatch, navigate, isCreatePage],
+  );
 
   useEffect(() => {
     dispatch(findAll());
   }, [dispatch]);
 
+
   return (
     <div
-      className={`sticky flex flex-col h-[calc(100vh-80px)] px-20 py-12 gap-y-4`}
+      className={`sticky top-0 flex flex-col h-[calc(100vh-80px)] px-20 py-12 gap-y-4`}
     >
       <h2 className="text-2xl font-bold text-slate-800">Словари</h2>
       <div className="flex flex-col justify-between h-full">
-        <div className="flex flex-col overflow-y-scroll no-scrollbar gap-y-3">
+        <div className="flex flex-col overflow-y-auto gap-y-3">
           {dictionaries == null || dictionaries.length == 0 ? (
             <p className="font-semibold text-slate-400">Здесь пусто</p>
           ) : (
@@ -48,6 +59,9 @@ const Sidebar: FC = () => {
           <FiPlus size={24} />
           <Link
             to="/dictionaries/create"
+            onClick={() => {
+              dispatch(setSelectedDictionaryId(null));
+            }}
             className="content-center w-full h-full text-base font-bold text-left "
           >
             Создать новый

@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-white;
+}
+
+.button-main {
+  @apply w-full h-12 px-4 text-base font-bold text-white transition-colors bg-blue-500 rounded-2xl hover:bg-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-500;
+}
+
+.button-text {
+  @apply px-3 text-base font-bold transition-colors text-slate-800 hover:text-blue-500 focus:outline-none;
+}
+
+.text-input {
+  @apply w-full h-12 px-4 text-base font-semibold border text-slate-800 placeholder:text-slate-400 placeholder:font-semibold placeholder:text-sm border-slate-300 rounded-2xl focus:outline-none focus:ring-1 focus:ring-blue-500;
+}

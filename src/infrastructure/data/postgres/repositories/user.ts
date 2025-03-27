@@ -2,7 +2,7 @@ import { IUserRepository } from '@application/repositories/user.interface';
 import { User } from '@domain/user';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '@postgres/entities/user';
+import { UserEntity } from '@infrastructure/data/postgres/entities/user';
 import { Repository } from 'typeorm';
 
 @Injectable()

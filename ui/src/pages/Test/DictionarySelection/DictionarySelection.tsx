@@ -1,24 +1,29 @@
-import { FC, useEffect } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import Button from './Button';
-import { useAppDispatch, useAppSelector } from '../../../utils/hooks';
 import LinkCreate from './LinkCreate';
-import { findAll } from '../../../store/slices/dictionaries';
-import { generateTest } from '../../../store/slices/test';
+import { useAppDispatch, useAppSelector } from '../../../utils/hooks'
+import { generateTest } from '../../../store/slices/test'
+import { findAll } from '../../../store/slices/dictionaries'
 
-const DictionarySelection: FC = () => {
+interface Props {
+  onClick: () => void;
+}
+
+const DictionarySelection: FC<Props> = ({onClick}) => {
   const { dictionaries } = useAppSelector((state) => state.dictionaries);
   const { selectedDictionaryId } = useAppSelector((state) => state.test);
 
   const dispatch = useAppDispatch();
 
-  const onSelectDictionaryId = (id: string) => {
+  const onSelectDictionaryId = useCallback((id: string) => {
     dispatch(
       generateTest({
         dictionaryId: id,
         wrongsCount: 5,
       }),
     );
-  };
+    onClick();
+  }, [dispatch, onClick]);
 
   useEffect(() => {
     dispatch(findAll());
@@ -29,8 +34,8 @@ const DictionarySelection: FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center w-full gap-y-4">
-      <p className="text-2xl font-bold text-slate-800">Выбор словаря</p>
+    <div className="flex flex-col items-center w-full gap-y-8">
+      <p className="text-2xl font-bold text-slate-800">Выберите словарь:</p>
 
       <div className="flex flex-row gap-x-4">
         {dictionaries.map((item) => (

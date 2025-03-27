@@ -24,7 +24,16 @@ export class DictionaryEntry {
   ) {}
 
   changeRating(rating: number): void {
-    this.rating += rating;
+    const newRating = this.rating + rating;
+    if (newRating >= -4 && newRating <= 4) {
+      this.rating = newRating;
+    } else {
+      if (newRating < -4) {
+        this.rating = -4;
+      } else if (newRating > 4) {
+        this.rating = 4;
+      }
+    }
     this.updateAt = new Date();
   }
 
@@ -43,15 +52,18 @@ export class DictionaryEntry {
       };
     },
   ): DictionaryEntry {
+    const updatedAt = new Date();
+    updatedAt.setMinutes(updatedAt.getMinutes() - 15);
+
     return new DictionaryEntry(
       uuidv4(),
       dictionaryId,
       word,
       pos,
       translated,
-      0,
+      -4,
       new Date(),
-      new Date(),
+      updatedAt,
     );
   }
 }

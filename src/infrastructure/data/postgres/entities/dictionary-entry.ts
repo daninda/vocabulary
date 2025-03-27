@@ -1,8 +1,16 @@
-import { Column, Entity, JoinTable, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 
 import { DictionaryEntity } from './dictionary';
+import { TestStatisticEntity } from './test-statistic';
 
-@Entity({ name: 'dictionary-entry' })
+@Entity({ name: 'dictionary_entry' })
 export class DictionaryEntryEntity {
   @PrimaryColumn()
   id: string;
@@ -16,6 +24,15 @@ export class DictionaryEntryEntity {
   )
   @JoinTable({ name: 'dictionary_id' })
   dictionary: DictionaryEntity;
+
+  @OneToMany(
+    () => TestStatisticEntity,
+    (testStatistic) => testStatistic.dictionaryEntry,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
+  testStatistic: DictionaryEntryEntity[];
 
   @Column()
   word: string;
@@ -41,9 +58,9 @@ export class DictionaryEntryEntity {
   @Column()
   tr_example: string;
 
-  @Column({ name: 'create_at', type: 'timestamp' })
+  @Column({ name: 'create_at', type: 'timestamp with time zone' })
   createAt: Date;
 
-  @Column({ name: 'update_at', type: 'timestamp' })
+  @Column({ name: 'update_at', type: 'timestamp with time zone' })
   updateAt: Date;
 }

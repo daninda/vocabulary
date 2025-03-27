@@ -1,8 +1,8 @@
 import { IUserRepository } from '@application/repositories/user.interface';
 import { UserController } from '@infrastructure/controllers/user';
 import { Module } from '@nestjs/common';
-import { RepositoriesModule } from '@postgres/repositories.module';
-import { UserRepository } from '@postgres/repositories/user';
+import { RepositoriesModule } from '@infrastructure/data/postgres/repositories.module';
+import { UserRepository } from '@infrastructure/data/postgres/repositories/user';
 import { GetUserInfoUseCase } from '@usecases/user/get-info.usecase';
 
 import { AuthModule } from './auth';

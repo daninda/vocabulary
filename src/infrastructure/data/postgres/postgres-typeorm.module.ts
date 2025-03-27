@@ -5,6 +5,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DictionaryEntity } from './entities/dictionary';
 import { DictionaryEntryEntity } from './entities/dictionary-entry';
 import { SessionEntity } from './entities/session';
+import { TestStatisticEntity } from './entities/test-statistic';
 import { UserEntity } from './entities/user';
 
 export const typeormModuleFactory = (
@@ -25,6 +26,7 @@ export const typeormModuleFactory = (
       UserEntity,
       SessionEntity,
       DictionaryEntryEntity,
+      TestStatisticEntity,
     ],
   } as TypeOrmModuleOptions;
 };

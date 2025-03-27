@@ -17,7 +17,7 @@ const AddWord: FC = () => {
 
   return (
     <WrapperSmall>
-      <div className="flex flex-col items-center mt-12 gap-y-10">
+      <div className="flex flex-col items-center mt-12 mb-8 gap-y-10">
         <h1 className="text-4xl font-bold text-slate-800">
           Добавление слова или фразы
         </h1>

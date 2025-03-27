@@ -34,8 +34,8 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshResponse = await axios.post('/refresh-token', {
-          fingerprint: getFingerprint,
+        const refreshResponse = await api.post('api/auth/refresh', {
+          fingerprint: getFingerprint(),
         });
 
         localStorage.setItem('accessToken', refreshResponse.data.accessToken);

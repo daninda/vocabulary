@@ -2,7 +2,7 @@ import { ISessionRepository } from '@application/repositories/session.interface'
 import { Session } from '@domain/session';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SessionEntity } from '@postgres/entities/session';
+import { SessionEntity } from '@infrastructure/data/postgres/entities/session';
 import { Repository } from 'typeorm';
 
 @Injectable()

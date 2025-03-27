@@ -103,6 +103,8 @@ export class DictionaryEntryController {
   ): Promise<FindAllDictionaryEntryOutput> {
     const result = await this.findAllDictionaryEntryUseCase.execute(
       dto.dictionaryId,
+      dto.sort,
+      dto.search,
     );
 
     if (!result.isSuccess) {

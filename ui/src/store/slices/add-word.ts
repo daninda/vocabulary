@@ -10,6 +10,7 @@ import {
   ILookupInput,
   ILookupOutput,
 } from '../../services/dictionary-entry';
+import toast from 'react-hot-toast'
 
 interface InitialState {
   results: IDictionaryEntry[] | null;
@@ -160,6 +161,9 @@ export const addWordSlice = createAppSlice({
             }) || null;
           state.errorMessage = '';
           state.isLoading = false;
+          toast.success(
+            'Слово ' + action.payload.word + ' (' + action.payload.translated.word + ') добавлено в словарь',
+          );
         },
         rejected: (state, action) => {
           state.errorMessage = action.error.message || 'Something went wrong';
