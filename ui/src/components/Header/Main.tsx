@@ -36,7 +36,6 @@ const HeaderMain: FC = () => {
               text="Словари"
             />
 
-            <IconButton Icon={FiSearch} />
             <IconButton
               Icon={FiMenu}
               onClick={() => {
