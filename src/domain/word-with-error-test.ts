@@ -1,13 +1,13 @@
-import { IDictionaryEntry } from 'ui/src/utils/types';
+import { DictionaryEntry } from './dictionary-entry';
 
 export class WordWithErrorTest {
   constructor(
-    public dictionaryEntry: IDictionaryEntry,
+    public dictionaryEntry: DictionaryEntry,
     public wordWithError: string,
   ) {}
 
   static create(
-    dictionaryEntry: IDictionaryEntry,
+    dictionaryEntry: DictionaryEntry,
     wordWithError: string,
   ): WordWithErrorTest {
     return new WordWithErrorTest(dictionaryEntry, wordWithError);
